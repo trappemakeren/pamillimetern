@@ -120,43 +120,39 @@ async function lastProsjekter() {
     alleProsjekter = await Promise.all(rader.map(async p => {
       const kategori = normaliserKategori(p.kategori);
 
-      // Bilder fra Drive-mappe
+      // ── Bygg medieliste fra alle kilder ──
       let medier = [];
+
+      // 1. Bilder fra Drive-mappe
       if (p.mappe_id && p.mappe_id.trim()) {
-        medier = await hentMappebilder(p.mappe_id.trim());
-        // Fallback til bilde_url-kolonner hvis Drive API feiler (f.eks. 403)
-        if (medier.length === 0) {
-          for (const u of [p.bilde_url, p.bilde_url_2, p.bilde_url_3]) {
-            if (!u || !u.trim() || youtubeId(u.trim())) continue;
-            let m = u.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (!m) m = u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-            if (m) medier.push({ type: 'bilde', id: m[1], navn: '' });
-          }
-        }
-      } else {
-        // Fallback: gamle bilde_url-kolonner
-        // Sjekker også om noen av disse er YouTube-URLer (feilplassert)
-        for (const u of [p.bilde_url, p.bilde_url_2, p.bilde_url_3]) {
-          if (!u || !u.trim()) continue;
-          const ytID = youtubeId(u.trim());
-          if (ytID) {
-            medier.push({ type: 'youtube', id: ytID, navn: 'Video' });
-          } else {
-            let m = u.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (!m) m = u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-            medier.push({ type: 'bilde', id: m ? m[1] : u, navn: '' });
-          }
-        }
+        const mappeBilder = await hentMappebilder(p.mappe_id.trim());
+        medier.push(...mappeBilder);
       }
 
-      // YouTube-video legges inn som eget medium (plasseres sist i slideshowet)
-      // Støtter kommaseparert liste med flere YouTube-IDer
-      if (p.youtube_id && p.youtube_id.trim()) {
-        const ytIDer = p.youtube_id.split(',').map(s => s.trim()).filter(Boolean);
-        for (const ytRaw of ytIDer) {
+      // 2. Enkeltbilder fra bilde_url-kolonner (i tillegg til mappe)
+      for (const u of [p.bilde_url, p.bilde_url_2, p.bilde_url_3]) {
+        if (!u || !u.trim()) continue;
+        // Hopp over YouTube-URLer her – de håndteres nedenfor
+        if (youtubeId(u.trim())) continue;
+        let m = u.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (!m) m = u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+        if (m) medier.push({ type: 'bilde', id: m[1], navn: '' });
+      }
+
+      // 3. YouTube-videoer – støtter semikolon- eller kommaseparert liste
+      const ytKolonne = p.youtube_id || '';
+      if (ytKolonne.trim()) {
+        const ytRader = ytKolonne.split(/[;,]/).map(s => s.trim()).filter(Boolean);
+        for (const ytRaw of ytRader) {
           const ytID = youtubeId(ytRaw);
           if (ytID) medier.push({ type: 'youtube', id: ytID, navn: 'Video' });
         }
+      }
+      // Fang opp YouTube-URLer feilplassert i bilde_url-kolonnene
+      for (const u of [p.bilde_url, p.bilde_url_2, p.bilde_url_3]) {
+        if (!u || !u.trim()) continue;
+        const ytID = youtubeId(u.trim());
+        if (ytID) medier.push({ type: 'youtube', id: ytID, navn: 'Video' });
       }
 
       return { ...p, kategori, _medier: medier };
