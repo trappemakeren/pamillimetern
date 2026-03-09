@@ -36,14 +36,17 @@ function driveUrl(fileId, bredde = 1200) {
   return `https://lh3.googleusercontent.com/d/${id}=w${bredde}`;
 }
 
-// ── Google Drive video-URL (direkte nedlasting/streaming) ──
-function driveVideoUrl(fileId) {
+// ── Google Drive video-URL ──
+// Google Drive tillater ikke <video src="..."> direkte pga. CORS/redirect.
+// Løsning: bruk <iframe src="/preview"> for lightbox og gallerikort.
+function driveVideoIframeSrc(fileId) {
   if (!fileId) return '';
   let id = fileId;
   let m = fileId.match(/\/d\/([a-zA-Z0-9_-]+)/);
   if (!m) m = fileId.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   if (m) id = m[1];
-  return `https://drive.google.com/uc?export=download&id=${id}`;
+  // autoplay=1&loop=1 støttes av Drive preview-spilleren
+  return `https://drive.google.com/file/d/${id}/preview?autoplay=1&loop=1`;
 }
 
 // ── Hent alle mediefiler (bilder + mp4) fra en Drive-mappe ──
@@ -162,11 +165,16 @@ function kortHTML(p, i) {
       <span>${p.tittel}</span>
     </div>`;
   } else if (forste.erVideo) {
-    // Video som bakgrunn i kortet – autoplay, muted, loop, ingen kontroller
-    const mimeType = (forste.mimeType === 'video/quicktime') ? 'video/mp4' : (forste.mimeType || 'video/mp4');
-    mediEl = `<video autoplay muted loop playsinline class="pgalleri-video" aria-hidden="true">
-                <source src="${driveVideoUrl(forste.id)}" type="${mimeType}">
-              </video>
+    // Video i gallerikort via iframe (Google Drive blokkerer <video> direkte)
+    // pointer-events:none hindrer klikk på iframe – kortet håndterer klikket
+    mediEl = `<div class="pgalleri-video-wrapper">
+                <iframe src="${driveVideoIframeSrc(forste.id)}"
+                  class="pgalleri-video-iframe"
+                  allow="autoplay"
+                  allowfullscreen="false"
+                  frameborder="0"
+                  aria-hidden="true"></iframe>
+              </div>
               <div class="pgalleri-video-ikon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
                   <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.35)"/>
@@ -200,8 +208,11 @@ function apneLysbilde(indeks) {
 
 // ── Stopp aktiv video i lightbox (ved bytte/lukking) ──
 function stoppLightboxVideo() {
-  const v = document.getElementById('lightbox-video');
-  if (v) { v.pause(); v.src = ''; }
+  const iframe = document.getElementById('lightbox-video-iframe');
+  if (iframe) {
+    iframe.src = ''; // stopper avspilling
+    iframe.remove();
+  }
 }
 
 // ── Oppdater lightbox-innhold ──
@@ -255,32 +266,30 @@ function byttSlide(nyIndeks, medier) {
 
   const medium = medier[slideIndeks];
   const img    = document.getElementById('lightbox-bilde');
-  let   vid    = document.getElementById('lightbox-video');
 
   if (medium && medium.erVideo) {
-    // Vis video, skjul bilde
+    // Vis video via iframe, skjul bilde
     img.style.display = 'none';
     img.src = '';
-    if (!vid) {
-      // Lag video-element første gang
-      vid = document.createElement('video');
-      vid.id          = 'lightbox-video';
-      vid.autoplay    = true;
-      vid.muted       = true;
-      vid.loop        = true;
-      vid.playsInline = true;
-      vid.style.cssText = 'max-width:100%;max-height:70vh;display:block;margin:auto;border-radius:4px;';
-      img.parentNode.insertBefore(vid, img);
-    }
-    // Bruk source-element med riktig type for mov/mp4
-    const mimeType = (medium.mimeType === 'video/quicktime') ? 'video/mp4' : (medium.mimeType || 'video/mp4');
-    vid.innerHTML = `<source src="${driveVideoUrl(medium.id)}" type="${mimeType}">`;
-    vid.style.display = 'block';
-    vid.load();
-    vid.play().catch(() => {});
+    // Fjern gammel iframe om den finnes
+    const gammelIframe = document.getElementById('lightbox-video-iframe');
+    if (gammelIframe) gammelIframe.remove();
+    // Fjern gammelt video-element om det finnes fra tidligere versjon
+    const gammelVid = document.getElementById('lightbox-video');
+    if (gammelVid) gammelVid.remove();
+
+    const iframe = document.createElement('iframe');
+    iframe.id          = 'lightbox-video-iframe';
+    iframe.src         = driveVideoIframeSrc(medium.id);
+    iframe.allow       = 'autoplay';
+    iframe.frameBorder = '0';
+    // Portrett-videoer får egen klasse for riktig størrelse
+    iframe.className   = medium.portrett ? 'lightbox-video-iframe portrett' : 'lightbox-video-iframe';
+    img.parentNode.insertBefore(iframe, img);
   } else {
-    // Vis bilde, stopp/skjul video
-    if (vid) { vid.pause(); vid.src = ''; vid.style.display = 'none'; }
+    // Vis bilde, fjern evt. video-iframe
+    const gammelIframe = document.getElementById('lightbox-video-iframe');
+    if (gammelIframe) gammelIframe.remove();
     img.src           = medium ? driveUrl(medium.id) : '';
     img.style.display = medium ? 'block' : 'none';
   }
