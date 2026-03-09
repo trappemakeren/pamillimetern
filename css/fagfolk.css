@@ -1,0 +1,505 @@
+/* =============================================
+   fagfolk.css – B2B-seksjon for entreprenører og arkitekter
+   På Millimetern Møbelsnekkeri
+   ============================================= */
+
+/* ── B2B-stripe (global, brukes på alle sider) ── */
+.b2b-stripe {
+  background: var(--clr-bg-dark);
+  padding: 8px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 200;
+}
+.b2b-stripe p {
+  font-size: 11px;
+  color: #6B6560;
+  letter-spacing: 0.05em;
+}
+.b2b-stripe a.b2b-link {
+  font-size: 11px;
+  color: var(--clr-accent-lt);
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color var(--transition);
+  text-decoration: none;
+}
+.b2b-stripe a.b2b-link::after {
+  content: '→';
+  font-size: 13px;
+  transition: transform 0.2s;
+}
+.b2b-stripe a.b2b-link:hover {
+  color: #DDB98A;
+}
+.b2b-stripe a.b2b-link:hover::after {
+  transform: translateX(3px);
+}
+
+/* ── Fagfolk hero ── */
+.fagfolk-hero {
+  background: var(--clr-bg-dark);
+  padding: 100px 80px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  min-height: 540px;
+}
+.fagfolk-hero-left {
+  position: relative;
+}
+.fagfolk-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-accent-lt);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.fagfolk-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--clr-accent-lt);
+  flex-shrink: 0;
+}
+.fagfolk-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 4vw, 62px);
+  font-weight: 400;
+  color: var(--clr-white);
+  line-height: 1.1;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+.fagfolk-hero h1 em {
+  font-style: italic;
+  color: var(--clr-accent-lt);
+}
+.fagfolk-hero-lead {
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(253,250,245,0.6);
+  margin-bottom: 40px;
+  max-width: 480px;
+}
+.fagfolk-hero-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+.fagfolk-stat {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 28px 24px;
+}
+.fagfolk-stat-num {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--clr-accent-lt);
+  line-height: 1;
+}
+.fagfolk-stat-label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: rgba(253,250,245,0.35);
+  margin-top: 6px;
+}
+
+/* ── Hva vi leverer ── */
+.fagfolk-leveranser {
+  padding: 100px 80px;
+  background: var(--clr-bg);
+}
+.fagfolk-leveranser .section-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  display: block;
+  margin-bottom: 12px;
+}
+.fagfolk-leveranser h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3vw, 48px);
+  font-weight: 400;
+  margin-bottom: 56px;
+  color: var(--clr-ink);
+}
+.leveranse-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.leveranse-kort {
+  background: #EDE8DF;
+  padding: 44px 36px;
+  transition: background var(--transition);
+}
+.leveranse-kort:hover {
+  background: var(--clr-bg-dark);
+}
+.leveranse-kort:hover .leveranse-tittel,
+.leveranse-kort:hover .leveranse-body {
+  color: var(--clr-white);
+}
+.leveranse-kort:hover .leveranse-ikon {
+  color: var(--clr-accent-lt);
+}
+.leveranse-ikon {
+  font-size: 28px;
+  margin-bottom: 24px;
+  display: block;
+  color: var(--clr-accent);
+  transition: color var(--transition);
+}
+.leveranse-tittel {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 14px;
+  color: var(--clr-ink);
+  transition: color var(--transition);
+}
+.leveranse-body {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--clr-ink-mid);
+  transition: color var(--transition);
+}
+
+/* ── Teknisk spesifikasjon boks ── */
+.fagfolk-specs {
+  background: #EDE8DF;
+  padding: 72px 80px;
+}
+.fagfolk-specs h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 2.5vw, 40px);
+  font-weight: 400;
+  margin-bottom: 40px;
+  color: var(--clr-ink);
+}
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+.spec-rad {
+  background: var(--clr-bg);
+  padding: 24px 28px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.spec-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-ink-light);
+  min-width: 140px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.spec-verdi {
+  font-size: 14px;
+  color: var(--clr-ink);
+  line-height: 1.6;
+}
+.spec-verdi strong {
+  font-weight: 500;
+}
+
+/* ── Prosess ── */
+.fagfolk-prosess {
+  padding: 100px 80px;
+  background: var(--clr-bg);
+}
+.fagfolk-prosess h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3vw, 46px);
+  font-weight: 400;
+  margin-bottom: 56px;
+  color: var(--clr-ink);
+}
+.prosess-steg {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2px;
+  counter-reset: steg;
+}
+.steg {
+  background: #EDE8DF;
+  padding: 36px 28px;
+  position: relative;
+  counter-increment: steg;
+}
+.steg::before {
+  content: '0' counter(steg);
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--clr-accent);
+  display: block;
+  margin-bottom: 20px;
+}
+.steg h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  color: var(--clr-ink);
+}
+.steg p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--clr-ink-mid);
+}
+
+/* ── Referanser ── */
+.fagfolk-referanser {
+  padding: 100px 80px;
+  background: var(--clr-bg-dark);
+}
+.fagfolk-referanser .section-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--clr-accent-lt);
+  display: block;
+  margin-bottom: 12px;
+}
+.fagfolk-referanser h2 {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 400;
+  color: var(--clr-white);
+  margin-bottom: 56px;
+}
+.referanse-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-bottom: 48px;
+}
+.referanse-kort {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 36px 32px;
+}
+.ref-type {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--clr-accent-lt);
+  margin-bottom: 14px;
+}
+.ref-tittel {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--clr-white);
+  margin-bottom: 10px;
+}
+.ref-detaljer {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(253,250,245,0.5);
+}
+.ref-detaljer li {
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+}
+.ref-detaljer li:last-child {
+  border-bottom: none;
+}
+.ref-detaljer span {
+  color: rgba(253,250,245,0.8);
+}
+
+/* ── Kontakt B2B ── */
+.fagfolk-kontakt {
+  padding: 100px 80px;
+  background: var(--clr-bg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.fagfolk-kontakt-venstre h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3vw, 48px);
+  font-weight: 400;
+  color: var(--clr-ink);
+  margin-bottom: 20px;
+  line-height: 1.15;
+}
+.fagfolk-kontakt-venstre h2 em {
+  font-style: italic;
+  color: var(--clr-accent);
+}
+.fagfolk-kontakt-venstre p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--clr-ink-mid);
+  margin-bottom: 32px;
+}
+.kontakt-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.kontakt-info-rad {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  color: var(--clr-ink);
+}
+.kontakt-info-rad strong {
+  min-width: 80px;
+  font-weight: 500;
+  color: var(--clr-ink-light);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.kontakt-info-rad a {
+  color: var(--clr-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition);
+}
+.kontakt-info-rad a:hover {
+  border-color: var(--clr-accent);
+}
+
+/* Kontaktskjema */
+.fagfolk-form {
+  background: #EDE8DF;
+  padding: 40px 36px;
+}
+.fagfolk-form h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 28px;
+  color: var(--clr-ink);
+}
+.form-gruppe {
+  margin-bottom: 18px;
+}
+.form-gruppe label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-ink-mid);
+  margin-bottom: 6px;
+}
+.form-gruppe input,
+.form-gruppe select,
+.form-gruppe textarea {
+  width: 100%;
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-line);
+  padding: 11px 14px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--clr-ink);
+  appearance: none;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-gruppe input:focus,
+.form-gruppe select:focus,
+.form-gruppe textarea:focus {
+  border-color: var(--clr-accent);
+}
+.form-gruppe textarea {
+  height: 110px;
+  resize: vertical;
+}
+.form-gruppe select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B5E3C' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.form-to-kol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.fagfolk-form .btn-primary {
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  padding: 14px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--clr-bg-dark);
+  color: var(--clr-white);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background var(--transition);
+}
+.fagfolk-form .btn-primary:hover {
+  background: var(--clr-accent);
+}
+.form-note {
+  font-size: 12px;
+  color: var(--clr-ink-light);
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .fagfolk-hero,
+  .fagfolk-kontakt {
+    grid-template-columns: 1fr;
+    padding: 60px 24px;
+    gap: 48px;
+  }
+  .fagfolk-leveranser,
+  .fagfolk-specs,
+  .fagfolk-prosess,
+  .fagfolk-referanser {
+    padding: 64px 24px;
+  }
+  .leveranse-grid,
+  .referanse-grid {
+    grid-template-columns: 1fr;
+  }
+  .prosess-steg {
+    grid-template-columns: 1fr 1fr;
+  }
+  .specs-grid {
+    grid-template-columns: 1fr;
+  }
+  .b2b-stripe {
+    padding: 8px 20px;
+  }
+  .b2b-stripe p {
+    display: none;
+  }
+  .form-to-kol {
+    grid-template-columns: 1fr;
+  }
+}
