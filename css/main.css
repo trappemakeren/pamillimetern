@@ -136,11 +136,14 @@ p { max-width: 65ch; }
    HEADER / NAV
 ══════════════════════════════════ */
 .site-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
+  position: sticky;
+  top: 0;
   z-index: 100;
-  padding: 1.5rem var(--space-md);
+  padding: 1rem var(--space-md);
   transition: background var(--transition), padding var(--transition);
+  background: rgba(245, 240, 232, 0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--clr-line);
 }
 
 .site-header.scrolled {
@@ -246,7 +249,7 @@ p { max-width: 65ch; }
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: 10rem var(--space-md) var(--space-xl);
+  padding: 6rem var(--space-md) var(--space-xl);
   overflow: hidden;
 }
 
@@ -831,7 +834,7 @@ p { max-width: 65ch; }
   .nav-links { display: none; }
   .nav-toggle { display: flex; }
 
-  .hero { padding-top: 7rem; }
+  .hero { padding-top: 4rem; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
 
   .tjenester-grid { grid-template-columns: 1fr; }

@@ -6,36 +6,37 @@
 /* ── B2B-stripe (global, brukes på alle sider) ── */
 .b2b-stripe {
   background: var(--clr-bg-dark);
-  padding: 8px 40px;
+  padding: 5px 40px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   position: relative;
   z-index: 200;
+  line-height: 1;
 }
 .b2b-stripe p {
-  font-size: 11px;
-  color: #6B6560;
-  letter-spacing: 0.05em;
+  display: none;
 }
 .b2b-stripe a.b2b-link {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--clr-accent-lt);
   letter-spacing: 0.1em;
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   transition: color var(--transition);
   text-decoration: none;
+  opacity: 0.85;
 }
 .b2b-stripe a.b2b-link::after {
   content: '→';
-  font-size: 13px;
+  font-size: 11px;
   transition: transform 0.2s;
 }
 .b2b-stripe a.b2b-link:hover {
   color: #DDB98A;
+  opacity: 1;
 }
 .b2b-stripe a.b2b-link:hover::after {
   transform: translateX(3px);
