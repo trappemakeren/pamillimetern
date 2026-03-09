@@ -121,13 +121,19 @@ async function lastProsjekter() {
       if (p.mappe_id && p.mappe_id.trim()) {
         medier = await hentMappebilder(p.mappe_id.trim());
       } else {
-        medier = [p.bilde_url, p.bilde_url_2, p.bilde_url_3]
-          .filter(u => u && u.trim())
-          .map(u => {
+        // Fallback: gamle bilde_url-kolonner
+        // Sjekker også om noen av disse er YouTube-URLer (feilplassert)
+        for (const u of [p.bilde_url, p.bilde_url_2, p.bilde_url_3]) {
+          if (!u || !u.trim()) continue;
+          const ytID = youtubeId(u.trim());
+          if (ytID) {
+            medier.push({ type: 'youtube', id: ytID, navn: 'Video' });
+          } else {
             let m = u.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if (!m) m = u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-            return { type: 'bilde', id: m ? m[1] : u, navn: '' };
-          });
+            medier.push({ type: 'bilde', id: m ? m[1] : u, navn: '' });
+          }
+        }
       }
 
       // YouTube-video legges inn som eget medium (plasseres sist i slideshowet)
