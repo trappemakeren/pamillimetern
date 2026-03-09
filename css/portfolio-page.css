@@ -114,6 +114,38 @@
 }
 .pgalleri-kort:hover img { transform: scale(1.05); }
 
+/* Video i galleri-kort */
+.pgalleri-video {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s ease;
+}
+.pgalleri-kort:hover .pgalleri-video { transform: scale(1.05); }
+
+/* Play-ikon på video-kort */
+.pgalleri-video-ikon {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Video-thumbnail i slideshow */
+.slideshow-thumb .thumb-video-ikon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clr-dark);
+  border-radius: 3px;
+}
+
 .pgalleri-overlay {
   position: absolute;
   inset: 0;

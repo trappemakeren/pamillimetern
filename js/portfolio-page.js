@@ -1,7 +1,8 @@
 /* =============================================
    På Millimetern – portfolio-page.js
    Filtrering, lightbox med slideshow og Google Sheets-henting
-   Bilder hentes automatisk fra Google Drive-mappe via mappe_id-kolonne
+   Bilder og videoer (mp4) hentes fra Google Drive-mappe via mappe_id-kolonne
+   Videoer spilles automatisk, uten lyd og uten kontroller.
    ============================================= */
 
 const PORTFOLIO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRoVe-zXOkx8Ujj34RY9T6kEdPDS3XIpkQLJMFpInB6FKKSJfIhjqlkvWUavq-lOfhcN9G9ElXVeN9c/pub?gid=904554919&single=true&output=csv';
@@ -20,10 +21,14 @@ let lysbildeIndeks  = 0;
 let slideIndeks     = 0;
 let aktivProsjekter = [];
 
-// ── Google Drive URL-konvertering ──
+// ── Er dette en video-fil? ──
+function erVideo(filnavn) {
+  return /\.(mp4|mov|webm)$/i.test(filnavn || '');
+}
+
+// ── Google Drive bilde-URL ──
 function driveUrl(fileId, bredde = 1200) {
   if (!fileId) return '';
-  // Håndter at vi får full URL eller bare ID
   let id = fileId;
   let m = fileId.match(/\/d\/([a-zA-Z0-9_-]+)/);
   if (!m) m = fileId.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -31,22 +36,39 @@ function driveUrl(fileId, bredde = 1200) {
   return `https://lh3.googleusercontent.com/d/${id}=w${bredde}`;
 }
 
-// ── Hent alle bilder i en Drive-mappe via API ──
+// ── Google Drive video-URL (direkte nedlasting/streaming) ──
+function driveVideoUrl(fileId) {
+  if (!fileId) return '';
+  let id = fileId;
+  let m = fileId.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (!m) m = fileId.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (m) id = m[1];
+  return `https://drive.google.com/uc?export=download&id=${id}`;
+}
+
+// ── Hent alle mediefiler (bilder + mp4) fra en Drive-mappe ──
 async function hentMappebilder(mappeId) {
   if (!mappeId || !mappeId.trim()) return [];
-  // Støtter full URL (https://drive.google.com/drive/folders/ID) eller bare ID
   let id = mappeId.trim();
   const m = id.match(/\/folders\/([a-zA-Z0-9_-]+)/);
   if (m) id = m[1];
   try {
+    // Hent både bilder og mp4-videoer i én forespørsel
+    const q = encodeURIComponent(
+      `'${id}' in parents and (mimeType contains 'image/' or mimeType = 'video/mp4' or mimeType = 'video/quicktime')`
+    );
     const url = `https://www.googleapis.com/drive/v3/files`
-      + `?q='${id}'+in+parents+and+mimeType+contains+'image/'`
-      + `&fields=files(id,name)&orderBy=name&pageSize=50`
+      + `?q=${q}&fields=files(id,name,mimeType)&orderBy=name&pageSize=50`
       + `&key=${DRIVE_API_KEY}`;
     const res = await fetch(url);
     if (!res.ok) return [];
     const data = await res.json();
-    return (data.files || []).map(f => f.id);
+    // Returner objekt med id, navn og type for hvert media
+    return (data.files || []).map(f => ({
+      id:      f.id,
+      navn:    f.name,
+      erVideo: f.mimeType.startsWith('video/'),
+    }));
   } catch {
     return [];
   }
@@ -63,10 +85,8 @@ function normaliserKategori(verdi) {
 
 // ── Last inn prosjekter ──
 async function lastProsjekter() {
-  const galleri = document.getElementById('portfolio-galleri');
-
   if (PORTFOLIO_CSV_URL.includes('DIN_GOOGLE')) {
-    alleProsjekter = DEMO_PROSJEKTER;
+    alleProsjekter = DEMO_PROSJEKTER.map(p => ({ ...p, _medier: [] }));
     visProsjekter('Alle');
     return;
   }
@@ -78,31 +98,30 @@ async function lastProsjekter() {
 
     const rader = parseCSV(csv).filter(p => p.publiser?.toLowerCase() === 'ja');
 
-    // Hent bilder fra Drive-mapper parallelt
     alleProsjekter = await Promise.all(rader.map(async p => {
       const kategori = normaliserKategori(p.kategori);
 
-      // Støtter både mappe_id-kolonne og gamle bilde_url-kolonner
-      let bilder = [];
+      let medier = []; // Array av { id, navn, erVideo }
       if (p.mappe_id && p.mappe_id.trim()) {
-        bilder = await hentMappebilder(p.mappe_id.trim());
+        medier = await hentMappebilder(p.mappe_id.trim());
       } else {
-        // Fallback: enkelt-URLer fra gamle kolonner
-        bilder = [p.bilde_url, p.bilde_url_2, p.bilde_url_3]
+        // Fallback: gamle bilde_url-kolonner (antas å være bilder)
+        medier = [p.bilde_url, p.bilde_url_2, p.bilde_url_3]
           .filter(u => u && u.trim())
           .map(u => {
             let m = u.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if (!m) m = u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-            return m ? m[1] : u;
+            const id = m ? m[1] : u;
+            return { id, navn: '', erVideo: false };
           });
       }
 
-      return { ...p, kategori, _bilder: bilder };
+      return { ...p, kategori, _medier: medier };
     }));
 
     visProsjekter('Alle');
   } catch {
-    alleProsjekter = DEMO_PROSJEKTER;
+    alleProsjekter = DEMO_PROSJEKTER.map(p => ({ ...p, _medier: [] }));
     visProsjekter('Alle');
   }
 }
@@ -124,26 +143,40 @@ function visProsjekter(kategori) {
   });
 }
 
-// ── HTML for ett kort ──
+// ── HTML for ett galleri-kort ──
 function kortHTML(p, i) {
-  const farge    = ['#D4C5B0','#C9B99A','#BFB0A0','#D9CDBF','#CFC0AD','#C4B5A2'][i % 6];
-  const bilder   = p._bilder || [];
-  const forsteId = bilder[0];
+  const farge   = ['#D4C5B0','#C9B99A','#BFB0A0','#D9CDBF','#CFC0AD','#C4B5A2'][i % 6];
+  const medier  = p._medier || [];
+  const forste  = medier[0];
 
-  const bildeEl = forsteId
-    ? `<img src="${driveUrl(forsteId)}" alt="${p.tittel}" loading="lazy" />`
-    : `<div class="pgalleri-placeholder" style="background:${farge}">
-        <svg width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
-          <rect x="8" y="8" width="32" height="32" rx="2"/>
-          <circle cx="18" cy="18" r="4"/>
-          <path d="M8 32 l10-10 8 8 6-6 8 8"/>
-        </svg>
-        <span>${p.tittel}</span>
-      </div>`;
+  let mediEl;
+  if (!forste) {
+    // Ingen media – vis placeholder
+    mediEl = `<div class="pgalleri-placeholder" style="background:${farge}">
+      <svg width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="8" y="8" width="32" height="32" rx="2"/>
+        <circle cx="18" cy="18" r="4"/>
+        <path d="M8 32 l10-10 8 8 6-6 8 8"/>
+      </svg>
+      <span>${p.tittel}</span>
+    </div>`;
+  } else if (forste.erVideo) {
+    // Video som bakgrunn i kortet – autoplay, muted, loop, ingen kontroller
+    mediEl = `<video src="${driveVideoUrl(forste.id)}" autoplay muted loop playsinline
+                class="pgalleri-video" aria-hidden="true"></video>
+              <div class="pgalleri-video-ikon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
+                  <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.35)"/>
+                  <polygon points="10,8 17,12 10,16" fill="white"/>
+                </svg>
+              </div>`;
+  } else {
+    mediEl = `<img src="${driveUrl(forste.id)}" alt="${p.tittel}" loading="lazy" />`;
+  }
 
   return `
     <article class="pgalleri-kort" role="button" tabindex="0" aria-label="${p.tittel}">
-      ${bildeEl}
+      ${mediEl}
       <div class="pgalleri-overlay">
         <div class="pgalleri-kat">${p.kategori}</div>
         <div class="pgalleri-tittel">${p.tittel}</div>
@@ -162,30 +195,44 @@ function apneLysbilde(indeks) {
   document.body.style.overflow = 'hidden';
 }
 
+// ── Stopp aktiv video i lightbox (ved bytte/lukking) ──
+function stoppLightboxVideo() {
+  const v = document.getElementById('lightbox-video');
+  if (v) { v.pause(); v.src = ''; }
+}
+
 // ── Oppdater lightbox-innhold ──
 function oppdaterLysbilde() {
   const p      = aktivProsjekter[lysbildeIndeks];
-  const bilder = p._bilder || [];
+  const medier = p._medier || [];
 
   document.getElementById('lightbox-tittel').textContent      = p.tittel;
   document.getElementById('lightbox-kategori').textContent    = p.kategori;
   document.getElementById('lightbox-beskrivelse').textContent = p.beskrivelse || '';
 
-  // Vis/skjul piler basert på antall bilder
   const slideshow = document.getElementById('slideshow');
-  slideshow.classList.toggle('ett-bilde', bilder.length <= 1);
+  slideshow.classList.toggle('ett-bilde', medier.length <= 1);
 
-  // Sett aktivt bilde
-  byttSlide(0, bilder);
+  byttSlide(0, medier);
 
   // Bygg thumbnails
   const thumbContainer = document.getElementById('slideshow-thumbnails');
-  if (bilder.length > 1) {
-    thumbContainer.innerHTML = bilder.map((id, i) =>
-      `<button class="slideshow-thumb ${i === 0 ? 'aktiv' : ''}" data-slide="${i}" aria-label="Bilde ${i + 1}">
-         <img src="${driveUrl(id, 200)}" alt="Bilde ${i + 1}" loading="lazy" />
-       </button>`
-    ).join('');
+  if (medier.length > 1) {
+    thumbContainer.innerHTML = medier.map((m, i) => {
+      if (m.erVideo) {
+        return `<button class="slideshow-thumb ${i === 0 ? 'aktiv' : ''}" data-slide="${i}" aria-label="Video ${i + 1}">
+          <div class="thumb-video-ikon">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+              <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)"/>
+              <polygon points="10,8 17,12 10,16" fill="white"/>
+            </svg>
+          </div>
+        </button>`;
+      }
+      return `<button class="slideshow-thumb ${i === 0 ? 'aktiv' : ''}" data-slide="${i}" aria-label="Bilde ${i + 1}">
+        <img src="${driveUrl(m.id, 200)}" alt="Bilde ${i + 1}" loading="lazy" />
+      </button>`;
+    }).join('');
     thumbContainer.querySelectorAll('.slideshow-thumb').forEach(btn => {
       btn.addEventListener('click', () => byttSlide(parseInt(btn.dataset.slide)));
     });
@@ -196,19 +243,45 @@ function oppdaterLysbilde() {
   }
 }
 
-// ── Bytt bilde i slideshow ──
-function byttSlide(nyIndeks, bilder) {
-  bilder = bilder || (aktivProsjekter[lysbildeIndeks]._bilder || []);
-  if (nyIndeks < 0) nyIndeks = bilder.length - 1;
-  if (nyIndeks >= bilder.length) nyIndeks = 0;
+// ── Bytt media i slideshow ──
+function byttSlide(nyIndeks, medier) {
+  medier = medier || (aktivProsjekter[lysbildeIndeks]._medier || []);
+  if (nyIndeks < 0) nyIndeks = medier.length - 1;
+  if (nyIndeks >= medier.length) nyIndeks = 0;
   slideIndeks = nyIndeks;
 
-  const img = document.getElementById('lightbox-bilde');
-  img.src           = bilder[slideIndeks] ? driveUrl(bilder[slideIndeks]) : '';
-  img.style.display = bilder[slideIndeks] ? 'block' : 'none';
+  const medium = medier[slideIndeks];
+  const img    = document.getElementById('lightbox-bilde');
+  let   vid    = document.getElementById('lightbox-video');
+
+  if (medium && medium.erVideo) {
+    // Vis video, skjul bilde
+    img.style.display = 'none';
+    img.src = '';
+    if (!vid) {
+      // Lag video-element første gang
+      vid = document.createElement('video');
+      vid.id          = 'lightbox-video';
+      vid.autoplay    = true;
+      vid.muted       = true;
+      vid.loop        = true;
+      vid.playsInline = true;
+      vid.style.cssText = 'max-width:100%;max-height:70vh;display:block;margin:auto;border-radius:4px;';
+      img.parentNode.insertBefore(vid, img);
+    }
+    vid.src           = driveVideoUrl(medium.id);
+    vid.style.display = 'block';
+    vid.load();
+    vid.play().catch(() => {});
+  } else {
+    // Vis bilde, stopp/skjul video
+    if (vid) { vid.pause(); vid.src = ''; vid.style.display = 'none'; }
+    img.src           = medium ? driveUrl(medium.id) : '';
+    img.style.display = medium ? 'block' : 'none';
+  }
 
   const teller = document.getElementById('slideshow-teller');
-  teller.textContent = bilder.length > 1 ? `${slideIndeks + 1} / ${bilder.length}` : '';
+  teller.textContent = medier.length > 1 ? `${slideIndeks + 1} / ${medier.length}` : '';
 
   document.querySelectorAll('.slideshow-thumb').forEach((t, i) => {
     t.classList.toggle('aktiv', i === slideIndeks);
@@ -216,6 +289,7 @@ function byttSlide(nyIndeks, bilder) {
 }
 
 function lukkLysbilde() {
+  stoppLightboxVideo();
   document.getElementById('lightbox').style.display = 'none';
   document.getElementById('lightbox-bakgrunn').style.display = 'none';
   document.body.style.overflow = '';
@@ -230,7 +304,7 @@ document.getElementById('filter-knapper')?.addEventListener('click', (e) => {
   visProsjekter(knapp.dataset.kategori);
 });
 
-// ── Slide-piler (innen ett prosjekt) ──
+// ── Slide-piler ──
 document.getElementById('slide-forrige')?.addEventListener('click', (e) => {
   e.stopPropagation();
   byttSlide(slideIndeks - 1);
@@ -245,11 +319,13 @@ document.getElementById('lightbox-lukk')?.addEventListener('click', lukkLysbilde
 document.getElementById('lightbox-bakgrunn')?.addEventListener('click', lukkLysbilde);
 
 document.getElementById('lightbox-neste')?.addEventListener('click', () => {
+  stoppLightboxVideo();
   lysbildeIndeks = (lysbildeIndeks + 1) % aktivProsjekter.length;
   slideIndeks = 0;
   oppdaterLysbilde();
 });
 document.getElementById('lightbox-forrige')?.addEventListener('click', () => {
+  stoppLightboxVideo();
   lysbildeIndeks = (lysbildeIndeks - 1 + aktivProsjekter.length) % aktivProsjekter.length;
   slideIndeks = 0;
   oppdaterLysbilde();
@@ -265,10 +341,11 @@ document.getElementById('lightbox')?.addEventListener('touchend', (e) => {
   const dx = e.changedTouches[0].clientX - touchStartX;
   const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
   if (Math.abs(dx) > 50 && dy < 80) {
-    const bilder = aktivProsjekter[lysbildeIndeks]._bilder || [];
-    if (bilder.length > 1) {
+    const medier = aktivProsjekter[lysbildeIndeks]._medier || [];
+    if (medier.length > 1) {
       byttSlide(dx < 0 ? slideIndeks + 1 : slideIndeks - 1);
     } else {
+      stoppLightboxVideo();
       lysbildeIndeks = dx < 0
         ? (lysbildeIndeks + 1) % aktivProsjekter.length
         : (lysbildeIndeks - 1 + aktivProsjekter.length) % aktivProsjekter.length;
@@ -281,19 +358,18 @@ document.getElementById('lightbox')?.addEventListener('touchend', (e) => {
 // ── Tastaturnavigasjon ──
 document.addEventListener('keydown', (e) => {
   if (document.getElementById('lightbox').style.display === 'none') return;
-  const bilder = aktivProsjekter[lysbildeIndeks]._bilder || [];
+  const medier = aktivProsjekter[lysbildeIndeks]._medier || [];
   if (e.key === 'Escape') {
     lukkLysbilde();
   } else if (e.key === 'ArrowRight') {
-    if (bilder.length > 1 && slideIndeks < bilder.length - 1) byttSlide(slideIndeks + 1);
-    else { lysbildeIndeks = (lysbildeIndeks + 1) % aktivProsjekter.length; slideIndeks = 0; oppdaterLysbilde(); }
+    if (medier.length > 1 && slideIndeks < medier.length - 1) byttSlide(slideIndeks + 1);
+    else { stoppLightboxVideo(); lysbildeIndeks = (lysbildeIndeks + 1) % aktivProsjekter.length; slideIndeks = 0; oppdaterLysbilde(); }
   } else if (e.key === 'ArrowLeft') {
-    if (bilder.length > 1 && slideIndeks > 0) byttSlide(slideIndeks - 1);
-    else { lysbildeIndeks = (lysbildeIndeks - 1 + aktivProsjekter.length) % aktivProsjekter.length; slideIndeks = 0; oppdaterLysbilde(); }
+    if (medier.length > 1 && slideIndeks > 0) byttSlide(slideIndeks - 1);
+    else { stoppLightboxVideo(); lysbildeIndeks = (lysbildeIndeks - 1 + aktivProsjekter.length) % aktivProsjekter.length; slideIndeks = 0; oppdaterLysbilde(); }
   }
 });
 
-// ── CSV-parser ──
 // RFC 4180-kompatibel parser – håndterer linjeskift og komma inne i anførselstegn
 function parseCSV(tekst) {
   const rader = [];
@@ -303,9 +379,9 @@ function parseCSV(tekst) {
   for (let i = 0; i < t.length; i++) {
     const c = t[i];
     if (iAnforsels) {
-      if (c === '"' && t[i + 1] === '"') { verdi += '"'; i++; } // escaped ""
+      if (c === '"' && t[i + 1] === '"') { verdi += '"'; i++; }
       else if (c === '"') { iAnforsels = false; }
-      else { verdi += c; } // linjeskift inne i felt er lov
+      else { verdi += c; }
     } else {
       if (c === '"') { iAnforsels = true; }
       else if (c === ',') { felt.push(verdi.trim()); verdi = ''; }
