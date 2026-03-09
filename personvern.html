@@ -116,9 +116,24 @@
       <p>Vi bruker <strong>ingen sporingsverktøy</strong>, ingen analyseprogramvare (f.eks. Google Analytics) og ingen reklamecookies.</p>
 
       <h2>3. Informasjonskapsler (cookies)</h2>
-      <p>Denne nettsiden bruker <strong>ingen cookies</strong> til sporing eller markedsføring. Det eneste som lagres lokalt er ditt samtykke til personvernerklæringen, ved hjelp av <code>localStorage</code> – dette forlater aldri din egen nettleser.</p>
+      <p>Denne nettsiden bruker <strong>ingen cookies</strong> som standard. Det eneste som lagres lokalt er ditt samtykkevalg og eventuelle analysepreferanser, ved hjelp av <code>localStorage</code> i nettleseren din – dette forlater aldri din enhet uten ditt samtykke.</p>
 
-      <h2>4. Tredjeparts tjenester</h2>
+      <p>Dersom du samtykker til analysetjenester, kan Google Analytics sette cookies i nettleseren din. Se detaljer nedenfor.</p>
+
+      <h2>4. Google Analytics (kun med samtykke)</h2>
+      <p>Vi ønsker å bruke Google Analytics for å forstå hvordan besøkende bruker nettsiden – for eksempel hvilke sider som er mest besøkt og hvor besøkende kommer fra. Dette hjelper oss å forbedre innholdet.</p>
+      <p>Google Analytics aktiveres <strong>kun dersom du eksplisitt godtar</strong> dette i samtykkebanneret som vises første gang du besøker siden. Vi har aktivert følgende personverninnstillinger:</p>
+      <ul>
+        <li>IP-anonymisering er aktivert – din fulle IP-adresse lagres ikke</li>
+        <li>Remarketingfunksjoner er deaktivert</li>
+        <li>Annonsepersonalisering er deaktivert</li>
+      </ul>
+      <p>Rettslig grunnlag for behandling via Google Analytics: <strong>samtykke</strong> (GDPR art. 6 (1) a).</p>
+
+      <p>Du kan når som helst trekke tilbake samtykket ditt:</p>
+      <p><button onclick="localStorage.removeItem('pam_ga_samtykke'); localStorage.removeItem('pam_personvern_sett'); location.reload();" style="background:none;border:1px solid #8B5E3C;color:#8B5E3C;padding:8px 18px;cursor:pointer;font-size:0.9rem;">Tilbakestill samtykke</button></p>
+
+      <h2>5. Tredjeparts tjenester</h2>
       <p>For å drifte nettsiden bruker vi følgende tjenester som kan behandle tekniske data (bl.a. IP-adresse):</p>
 
       <table>
@@ -141,6 +156,12 @@
           <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google personvern</a></td>
         </tr>
         <tr>
+          <td>Google Analytics</td>
+          <td>Besøksstatistikk (kun med samtykke)</td>
+          <td>Google LLC (USA) – Standard Contractual Clauses</td>
+          <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google personvern</a></td>
+        </tr>
+        <tr>
           <td>Formspree</td>
           <td>Mottak og videresending av kontaktskjema</td>
           <td>Formspree Inc. (USA) – Standard Contractual Clauses</td>
@@ -156,16 +177,16 @@
 
       <p>Alle overføringer til USA skjer i henhold til EU-godkjente overføringsmekanismer (Standard Contractual Clauses eller EU-U.S. Data Privacy Framework).</p>
 
-      <h2>5. Formål og rettslig grunnlag</h2>
+      <h2>6. Formål og rettslig grunnlag</h2>
       <ul>
         <li><strong>Besvare forespørsler:</strong> Opplysninger du sender inn via skjema brukes til å svare deg og eventuelt inngå avtale. Grunnlag: avtale / berettiget interesse (GDPR art. 6 (1) b/f).</li>
         <li><strong>Drift av nettsiden:</strong> Tekniske data (IP-adresse) behandles av hostingleverandør som ledd i normal drift. Grunnlag: berettiget interesse (GDPR art. 6 (1) f).</li>
       </ul>
 
-      <h2>6. Lagringstid</h2>
+      <h2>7. Lagringstid</h2>
       <p>Henvendelser via kontaktskjema lagres hos Formspree i inntil 30 dager, deretter slettes de automatisk. Henvendelser vi svarer på via e-post lagres så lenge det er nødvendig for å håndtere kundeforholdet, normalt inntil 2 år.</p>
 
-      <h2>7. Dine rettigheter</h2>
+      <h2>8. Dine rettigheter</h2>
       <p>Du har rett til å:</p>
       <ul>
         <li>Kreve innsyn i hvilke opplysninger vi har om deg</li>
@@ -176,7 +197,7 @@
       </ul>
       <p>Send en e-post til <a href="mailto:post@pamillimetern.no">post@pamillimetern.no</a> for å utøve rettighetene dine. Du kan også klage til <a href="https://www.datatilsynet.no/" target="_blank" rel="noopener">Datatilsynet</a>.</p>
 
-      <h2>8. Endringer</h2>
+      <h2>9. Endringer</h2>
       <p>Vi kan oppdatere denne erklæringen. Dato øverst på siden viser når den sist ble revidert. Vesentlige endringer varsles på forsiden.</p>
     </div>
   </main>
@@ -197,6 +218,7 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/analytics.js"></script>
   <script src="js/personvern-banner.js"></script>
 </body>
 </html>
