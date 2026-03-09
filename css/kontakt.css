@@ -1,0 +1,286 @@
+/* =============================================
+   På Millimetern – kontakt.css
+   ============================================= */
+
+.required { color: var(--clr-accent); }
+
+.kontakt-wrapper {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  min-height: 100svh;
+  padding-top: 72px;
+}
+
+/* ── Aside ── */
+.kontakt-aside {
+  background: var(--clr-bg-dark);
+  padding: var(--space-xl) var(--space-lg);
+  position: sticky;
+  top: 72px;
+  height: calc(100svh - 72px);
+  overflow-y: auto;
+}
+
+.kontakt-aside-inner { display: flex; flex-direction: column; gap: 2rem; }
+
+.kontakt-aside h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  color: var(--clr-white);
+  line-height: 1.15;
+}
+.kontakt-aside h1 em { color: var(--clr-accent-lt); }
+
+.kontakt-info-blokk {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(253,250,245,0.1);
+  border-bottom: 1px solid rgba(253,250,245,0.1);
+}
+
+.kontakt-info-item { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.kontakt-info-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(253,250,245,0.35);
+  font-weight: 500;
+}
+.kontakt-info-verdi {
+  font-size: 0.95rem;
+  color: rgba(253,250,245,0.8);
+  line-height: 1.6;
+}
+.kontakt-link {
+  transition: color var(--transition);
+}
+.kontakt-link:hover { color: var(--clr-accent-lt); }
+
+.kontakt-responstid {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+.responstid-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4CAF50;
+  flex-shrink: 0;
+  margin-top: 6px;
+  box-shadow: 0 0 0 3px rgba(76,175,80,0.2);
+  animation: pulse-groen 2s ease infinite;
+}
+@keyframes pulse-groen {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(76,175,80,0.2); }
+  50%       { box-shadow: 0 0 0 6px rgba(76,175,80,0.1); }
+}
+.kontakt-responstid p {
+  font-size: 0.88rem;
+  color: rgba(253,250,245,0.6);
+  max-width: none;
+}
+.kontakt-responstid strong { color: rgba(253,250,245,0.9); }
+
+.kontakt-sitat blockquote {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(253,250,245,0.4);
+  line-height: 1.4;
+  border-left: 2px solid var(--clr-accent);
+  padding-left: 1.25rem;
+}
+
+/* ── Skjema-seksjon ── */
+.kontakt-main {
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  align-items: flex-start;
+}
+
+.kontakt-form-wrapper { width: 100%; max-width: 580px; }
+
+.kontakt-form-header { margin-bottom: var(--space-lg); }
+.kontakt-form-header h2 { margin-bottom: 0.75rem; }
+.kontakt-form-header p  { color: var(--clr-ink-mid); font-size: 0.95rem; margin-bottom: 0.5rem; }
+
+.kontakt-guide-tips {
+  font-size: 0.85rem !important;
+  color: var(--clr-ink-light) !important;
+  padding: 0.75rem 1rem;
+  background: var(--clr-white);
+  border-left: 2px solid var(--clr-accent-lt);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-top: 1rem !important;
+}
+.kontakt-guide-tips a {
+  color: var(--clr-accent);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Skjemafelt */
+.kform-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.form-row-kontakt {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.kform-group label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--clr-ink);
+}
+
+.kform-group input[type="text"],
+.kform-group input[type="email"],
+.kform-group input[type="tel"],
+.kform-group textarea {
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--clr-line);
+  border-radius: var(--radius-md);
+  background: var(--clr-white);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--clr-ink);
+  transition: border-color var(--transition);
+  outline: none;
+}
+.kform-group input:focus,
+.kform-group textarea:focus { border-color: var(--clr-accent); }
+.kform-group textarea { resize: vertical; min-height: 130px; }
+
+/* Pills for emne */
+.option-pills-kontakt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.option-pills-kontakt .pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1.1rem;
+  border: 1.5px solid var(--clr-line);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), color var(--transition);
+  background: var(--clr-white);
+  color: var(--clr-ink-mid);
+  user-select: none;
+}
+.option-pills-kontakt .pill input { display: none; }
+.option-pills-kontakt .pill:hover { border-color: var(--clr-accent-lt); color: var(--clr-ink); }
+.option-pills-kontakt .pill:has(input:checked) {
+  border-color: var(--clr-accent);
+  background: var(--clr-accent);
+  color: var(--clr-white);
+}
+
+/* Filopplasting */
+.file-upload {
+  position: relative;
+  border: 1.5px dashed var(--clr-line);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--transition);
+  background: var(--clr-white);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.file-upload:hover { border-color: var(--clr-accent-lt); }
+.file-upload input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.file-upload-text { font-size: 0.9rem; color: var(--clr-ink-mid); }
+.file-upload-hint  { font-size: 0.78rem; color: var(--clr-ink-light); }
+
+/* Samtykke */
+.kform-consent .check-inline-k {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--clr-ink-mid);
+  line-height: 1.6;
+}
+.kform-consent input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: var(--clr-accent);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.kontakt-send-btn { margin-top: 0.5rem; }
+
+/* Takk */
+.kontakt-takk {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+.takk-inner {
+  text-align: center;
+  max-width: 400px;
+  animation: fadeUp 0.6s ease both;
+}
+.takk-icon { color: var(--clr-accent); margin: 0 auto 1.5rem; width: 64px; }
+.takk-inner h2 { margin-bottom: 1rem; }
+.takk-inner p  { color: var(--clr-ink-mid); font-size: 0.95rem; }
+
+/* Kart */
+.kart-seksjon {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  height: 400px;
+  border-top: 1px solid var(--clr-line);
+}
+.kart-tekst {
+  padding: var(--space-lg);
+  background: var(--clr-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+.kart-tekst h3 { font-size: 1.6rem; }
+.kart-tekst p  { font-size: 0.9rem; color: var(--clr-ink-mid); }
+.kart-iframe { background: var(--clr-line); }
+.kart-iframe iframe { width: 100%; height: 100%; }
+
+/* Responsivt */
+@media (max-width: 900px) {
+  .kontakt-wrapper { grid-template-columns: 1fr; }
+  .kontakt-aside { position: static; height: auto; padding: var(--space-md); }
+  .kontakt-sitat { display: none; }
+  .kontakt-main { padding: var(--space-md); }
+  .kart-seksjon { grid-template-columns: 1fr; height: auto; }
+  .kart-iframe { height: 280px; }
+}
+@media (max-width: 600px) {
+  .form-row-kontakt { grid-template-columns: 1fr; }
+}

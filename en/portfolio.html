@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio – På Millimetern Furniture Studio</title>
+  <meta name="description" content="A selection of our work – custom kitchens, wardrobes and furniture made in Valdres for homes and projects across Norway." />
+  <link rel="canonical" href="https://pamillimetern.no/en/portfolio.html" />
+  <link rel="alternate" hreflang="no" href="https://pamillimetern.no/portfolio.html" />
+  <link rel="alternate" hreflang="en" href="https://pamillimetern.no/en/portfolio.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/portfolio-page.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+  <header class="site-header scrolled" id="site-header">
+    <nav class="nav-inner">
+      <a href="/en/" class="logo">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Furniture Studio</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/en/#services">Services</a></li>
+        <li><a href="/en/portfolio.html" style="color:var(--clr-ink);font-weight:500">Portfolio</a></li>
+        <li><a href="/en/guides.html">Guides</a></li>
+        <li><a href="/en/about.html">About us</a></li>
+        <li><a href="/en/request.html" class="nav-cta">Start a request</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu" id="nav-toggle"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/en/#services">Services</a></li>
+      <li><a href="/en/portfolio.html">Portfolio</a></li>
+      <li><a href="/en/guides.html">Guides</a></li>
+      <li><a href="/en/request.html">Start a request</a></li>
+    </ul>
+  </div>
+
+  <section class="portfolio-hero">
+    <div class="portfolio-hero-inner">
+      <span class="section-label">Our work</span>
+      <h1>Every project is<br /><em>unique.</em></h1>
+      <p>A selection of what we've created – kitchens, wardrobes and furniture made for homes and projects across Norway.</p>
+    </div>
+  </section>
+
+  <section class="portfolio-filter-seksjon">
+    <div class="portfolio-filter-inner">
+      <div class="filter-knapper" id="filter-knapper">
+        <button class="filter-btn active" data-kategori="Alle">All</button>
+        <button class="filter-btn" data-kategori="Kjøkken">Kitchens</button>
+        <button class="filter-btn" data-kategori="Garderobe">Wardrobes</button>
+        <button class="filter-btn" data-kategori="Møbler">Furniture</button>
+      </div>
+      <div class="filter-antall">
+        <span id="antall-visning">Loading…</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="portfolio-galleri-seksjon">
+    <div class="portfolio-galleri" id="portfolio-galleri">
+      <div class="portfolio-spinner">Loading projects…</div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band-inner">
+      <h2>Inspired? Let us create<br />something <em>for you.</em></h2>
+      <p>Tell us what you have in mind. We respond within 2 business days.</p>
+      <a href="/en/request.html" class="btn btn-primary btn-large">Start your request</a>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" style="display:none;">
+    <button class="lightbox-lukk" id="lightbox-lukk" aria-label="Close">✕</button>
+    <button class="lightbox-forrige" id="lightbox-forrige" aria-label="Previous">‹</button>
+    <div class="lightbox-innhold">
+      <div class="lightbox-bilde-wrapper">
+        <div class="slideshow" id="slideshow">
+          <img src="" alt="" id="lightbox-bilde" class="slide aktiv" />
+          <button class="slide-forrige" id="slide-forrige" aria-label="Previous image">‹</button>
+          <button class="slide-neste" id="slide-neste" aria-label="Next image">›</button>
+          <div class="slideshow-teller" id="slideshow-teller"></div>
+        </div>
+        <div class="slideshow-thumbnails" id="slideshow-thumbnails"></div>
+      </div>
+      <div class="lightbox-info">
+        <span class="lightbox-kategori" id="lightbox-kategori"></span>
+        <h3 id="lightbox-tittel"></h3>
+        <p id="lightbox-beskrivelse"></p>
+        <a href="/en/request.html" class="btn btn-primary" style="margin-top:1.5rem;">Start a similar project</a>
+      </div>
+    </div>
+    <button class="lightbox-neste" id="lightbox-neste" aria-label="Next">›</button>
+  </div>
+  <div class="lightbox-bakgrunn" id="lightbox-bakgrunn" style="display:none;"></div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Furniture Studio</span>
+        <p>Showroom: Ole Deviks vei 34, Oslo<br />Workshop: Begna, Valdres</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="/en/portfolio.html">Portfolio</a></li>
+          <li><a href="/en/guides.html">Guides</a></li>
+          <li><a href="/en/about.html">About us</a></li>
+          <li><a href="/en/contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/en/kitchen.html">Kitchens</a></li>
+          <li><a href="/en/wardrobe.html">Wardrobes</a></li>
+          <li><a href="/en/furniture.html">Furniture</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <a href="/en/request.html" class="btn btn-ghost btn-sm">Send a request</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p>© <span id="year"></span> På Millimetern Møbelsnekkeri AS · Org.nr. 989 794 248</p>
+        <div class="lang-switcher">
+          <a href="/portfolio.html" class="lang-btn">🇳🇴 Norsk</a>
+          <a href="/en/portfolio.html" class="lang-btn lang-btn--active">🇬🇧 English</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/portfolio-page.js"></script>
+</body>
+</html>

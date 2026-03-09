@@ -1,0 +1,354 @@
+/* =============================================
+   På Millimetern – portfolio-page.css
+   ============================================= */
+
+.nav-active { color: var(--clr-ink) !important; font-weight: 500 !important; }
+
+/* Hero */
+.portfolio-hero {
+  padding: calc(72px + var(--space-xl)) var(--space-md) var(--space-lg);
+  background: var(--clr-bg-dark);
+}
+.portfolio-hero-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.portfolio-hero .section-label { color: var(--clr-accent-lt); }
+.portfolio-hero h1 {
+  color: var(--clr-white);
+  font-size: clamp(3rem, 6vw, 5rem);
+  margin: 0.5rem 0 1.25rem;
+}
+.portfolio-hero h1 em { color: var(--clr-accent-lt); }
+.portfolio-hero p {
+  color: rgba(253,250,245,0.6);
+  font-size: 1.05rem;
+  max-width: 50ch;
+}
+
+/* Filter */
+.portfolio-filter-seksjon {
+  border-bottom: 1px solid var(--clr-line);
+  background: var(--clr-white);
+  position: sticky;
+  top: 72px;
+  z-index: 10;
+}
+.portfolio-filter-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 1rem var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.filter-knapper { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.filter-btn {
+  padding: 0.5rem 1.25rem;
+  border: 1.5px solid var(--clr-line);
+  border-radius: 100px;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--clr-ink-mid);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.filter-btn:hover { border-color: var(--clr-accent-lt); color: var(--clr-ink); }
+.filter-btn.active {
+  background: var(--clr-ink);
+  border-color: var(--clr-ink);
+  color: var(--clr-white);
+}
+
+.antall-visning {
+  font-size: 0.8rem;
+  color: var(--clr-ink-light);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Galleri */
+.portfolio-galleri-seksjon {
+  padding: var(--space-lg) var(--space-md);
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+.portfolio-galleri {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.portfolio-spinner {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--clr-ink-light);
+  padding: var(--space-lg) 0;
+  font-size: 0.9rem;
+}
+
+/* Galleri-kort */
+.pgalleri-kort {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  background: var(--clr-line);
+  animation: fadeUp 0.5s ease both;
+}
+.pgalleri-kort.stor   { grid-row: span 2; }
+.pgalleri-kort.bred   { grid-column: span 2; }
+
+.pgalleri-kort img {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s ease;
+}
+.pgalleri-kort:hover img { transform: scale(1.05); }
+
+.pgalleri-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(28,25,21,0.85) 0%, rgba(28,25,21,0) 50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  opacity: 1;  /* alltid synlig */
+}
+
+.pgalleri-kat {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clr-accent-lt);
+  margin-bottom: 0.4rem;
+}
+.pgalleri-tittel {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--clr-white);
+  line-height: 1.2;
+}
+
+/* Demo-placeholder */
+.pgalleri-placeholder {
+  width: 100%;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: rgba(92,84,73,0.5);
+  font-size: 0.85rem;
+}
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+.lightbox-bakgrunn {
+  position: fixed;
+  inset: 0;
+  background: rgba(28,25,21,0.92);
+  z-index: 999;
+  backdrop-filter: blur(4px);
+}
+.lightbox-innhold {
+  position: relative;
+  z-index: 1001;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 0;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 85vh;
+  background: var(--clr-white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  animation: fadeUp 0.3s ease;
+}
+.lightbox-bilde-wrapper { overflow: hidden; }
+.lightbox-bilde-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lightbox-info {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  background: var(--clr-bg);
+}
+.lightbox-kategori {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+.lightbox-info h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+.lightbox-info p  { font-size: 0.9rem; color: var(--clr-ink-mid); line-height: 1.75; }
+
+.lightbox-lukk {
+  position: fixed;
+  top: 1.5rem; right: 1.5rem;
+  z-index: 1002;
+  background: rgba(28,25,21,0.6);
+  color: white;
+  border: none;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.lightbox-lukk:hover { background: var(--clr-accent); }
+
+.lightbox-forrige, .lightbox-neste {
+  position: fixed;
+  top: 50%; transform: translateY(-50%);
+  z-index: 1002;
+  background: rgba(28,25,21,0.5);
+  color: white;
+  border: none;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.lightbox-forrige { left: 1.5rem; }
+.lightbox-neste   { right: 1.5rem; }
+.lightbox-forrige:hover, .lightbox-neste:hover { background: var(--clr-accent); }
+
+/* CTA band override for portfolio */
+.cta-band em { color: var(--clr-white); opacity: 0.85; }
+
+@media (max-width: 900px) {
+  .portfolio-galleri { grid-template-columns: repeat(2, 1fr); }
+  .pgalleri-kort.stor, .pgalleri-kort.bred { grid-column: auto; grid-row: auto; }
+  .lightbox-innhold { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+}
+@media (max-width: 600px) {
+  .portfolio-galleri { grid-template-columns: 1fr; }
+  .pgalleri-overlay { opacity: 1; }
+}
+
+/* ── Slideshow i lightbox ── */
+.slideshow {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  background: #111;
+  overflow: hidden;
+}
+.slideshow img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+/* Kontrollboks nede til høyre: teller + piler samlet */
+.slideshow-teller {
+  position: absolute;
+  bottom: 0.85rem;
+  right: 0.85rem;
+  background: rgba(28,25,21,0.65);
+  color: #fff;
+  font-size: 0.75rem;
+  font-family: var(--font-body);
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+/* Thumbnails */
+.slideshow-thumbnails {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  background: #1a1714;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.slideshow-thumbnails::-webkit-scrollbar { display: none; }
+
+.slideshow-thumb {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background: #333;
+  opacity: 0.55;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.slideshow-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.slideshow-thumb.aktiv,
+.slideshow-thumb:hover {
+  opacity: 1;
+  border-color: var(--clr-accent-lt);
+}
+
+
+/* ── Piler nede til høyre i slideshow ── */
+.slide-forrige, .slide-neste {
+  position: absolute;
+  bottom: 0.65rem;
+  z-index: 11;
+  background: rgba(28,25,21,0.55);
+  color: #fff;
+  border: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition), opacity var(--transition);
+  opacity: 0;
+  backdrop-filter: blur(4px);
+}
+.slideshow:hover .slide-forrige,
+.slideshow:hover .slide-neste { opacity: 1; }
+/* Plasser til venstre for telleren (teller er ~60px bred, + 0.85rem margin) */
+.slide-neste   { right: 5.5rem; }
+.slide-forrige { right: 8rem; }
+.slide-forrige:hover, .slide-neste:hover { background: var(--clr-accent); }
+
+/* Skjul piler og thumbnails når kun 1 bilde */
+.slideshow.ett-bilde .slide-forrige,
+.slideshow.ett-bilde .slide-neste { display: none; }

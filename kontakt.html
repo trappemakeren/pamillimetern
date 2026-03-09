@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontakt oss – På Millimetern Møbelsnekkeri</title>
+  <meta name="description" content="Ta kontakt med På Millimetern Møbelsnekkeri. Vi svarer innen 2 virkedager." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/kontakt.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <link rel="alternate" hreflang="no" href="https://pamillimetern.no/kontakt.html" />
+  <link rel="alternate" hreflang="en" href="https://pamillimetern.no/en/contact.html" />
+</head>
+<body>
+
+  <header class="site-header scrolled" id="site-header">
+    <nav class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Møbelsnekkeri</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#tjenester">Tjenester</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blogg.html">Guider</a></li>
+        <li><a href="/om-oss.html">Om oss</a></li>
+        <li><a href="guide.html" class="nav-cta">Start forespørsel</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Meny" id="nav-toggle">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/#tjenester">Tjenester</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="blogg.html">Guider</a></li>
+      <li><a href="guide.html">Start forespørsel</a></li>
+    </ul>
+  </div>
+
+  <main class="kontakt-wrapper">
+
+    <!-- Venstre: kontaktinfo -->
+    <aside class="kontakt-aside">
+      <div class="kontakt-aside-inner">
+        <span class="section-label">Kom i kontakt</span>
+        <h1>Vi hører<br />gjerne fra<br /><em>deg.</em></h1>
+
+        <div class="kontakt-info-blokk">
+          <div class="kontakt-info-item">
+            <span class="kontakt-info-label">Showroom / Oslo</span>
+            <span class="kontakt-info-verdi">
+              Ole Deviks vei 34<br />
+              Oslo
+            </span>
+          </div>
+          <div class="kontakt-info-item">
+            <span class="kontakt-info-label">Produksjon / Valdres</span>
+            <span class="kontakt-info-verdi">
+              Begna, Valdres
+            </span>
+          </div>
+          <div class="kontakt-info-item">
+            <span class="kontakt-info-label">E-post</span>
+            <a href="mailto:post@pamillimetern.no" class="kontakt-info-verdi kontakt-link">
+              post@pamillimetern.no
+            </a>
+          </div>
+          <div class="kontakt-info-item">
+            <span class="kontakt-info-label">Telefon</span>
+            <a href="tel:+4792883333" class="kontakt-info-verdi kontakt-link">
+              928 83 333
+            </a>
+          </div>
+          <div class="kontakt-info-item">
+            <span class="kontakt-info-label">Instagram</span>
+            <a href="https://www.instagram.com/millimetern_mobelsnekkeri/" target="_blank" rel="noopener" class="kontakt-info-verdi kontakt-link">
+              @millimetern_mobelsnekkeri
+            </a>
+          </div>
+        </div>
+
+        <div class="kontakt-responstid">
+          <div class="responstid-dot"></div>
+          <p>Vi svarer innen <strong>2 virkedager</strong> på alle henvendelser.</p>
+        </div>
+
+        <div class="kontakt-sitat">
+          <blockquote>
+            "Hvert prosjekt begynner med en samtale."
+          </blockquote>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Høyre: skjema -->
+    <section class="kontakt-main">
+
+      <div class="kontakt-form-wrapper" id="kontakt-form-wrapper">
+        <div class="kontakt-form-header">
+          <h2>Send oss en melding</h2>
+          <p>Har du et prosjekt i tankene, eller bare et spørsmål? Vi tar gjerne en uforpliktende prat.</p>
+          <p class="kontakt-guide-tips">
+            Planlegger du et større prosjekt?
+            <a href="guide.html">Bruk vår guide</a> – den hjelper deg beskrive prosjektet steg for steg.
+          </p>
+        </div>
+
+        <form action="https://formspree.io/f/mzdjddbw"
+          class="kontakt-form"
+          id="kontakt-form"
+          name="kontakt"
+          method="POST"
+        >
+<div class="form-row-kontakt">
+            <div class="kform-group">
+              <label for="k-navn">Navn <span class="required">*</span></label>
+              <input type="text" id="k-navn" name="navn" required placeholder="Ditt fulle navn" />
+            </div>
+            <div class="kform-group">
+              <label for="k-telefon">Telefon</label>
+              <input type="tel" id="k-telefon" name="telefon" placeholder="41 23 45 67" />
+            </div>
+          </div>
+
+          <div class="kform-group">
+            <label for="k-epost">E-post <span class="required">*</span></label>
+            <input type="email" id="k-epost" name="epost" required placeholder="din@epost.no" />
+          </div>
+
+          <div class="kform-group">
+            <label for="k-emne">Hva gjelder det?</label>
+            <div class="option-pills-kontakt">
+              <label class="pill"><input type="radio" name="emne" value="Kjøkken" /> Kjøkken</label>
+              <label class="pill"><input type="radio" name="emne" value="Garderobe" /> Garderobe</label>
+              <label class="pill"><input type="radio" name="emne" value="Møbel" /> Møbel</label>
+              <label class="pill"><input type="radio" name="emne" value="Annet" /> Annet</label>
+            </div>
+          </div>
+
+          <div class="kform-group">
+            <label for="k-melding">Melding <span class="required">*</span></label>
+            <textarea
+              id="k-melding"
+              name="melding"
+              rows="6"
+              required
+              placeholder="Beskriv gjerne hva du har i tankene – romstørrelse, stil, tidsplan eller annet som kan være nyttig for oss å vite."
+            ></textarea>
+          </div>
+
+          <div class="kform-group">
+            <label>Last opp bilde eller tegning (valgfritt)</label>
+            <div class="file-upload" id="k-file-area">
+              <input type="file" name="vedlegg" accept="image/*,.pdf" id="k-fil" />
+              <span class="file-upload-text">Klikk for å velge fil, eller dra hit</span>
+              <span class="file-upload-hint">JPG, PNG eller PDF – maks 10 MB</span>
+            </div>
+          </div>
+
+          <div class="kform-group kform-consent">
+            <label class="check-inline-k">
+              <input type="checkbox" name="samtykke" required />
+              <span>Jeg godtar at informasjonen brukes til å besvare min henvendelse.</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large kontakt-send-btn">
+            Send melding
+          </button>
+        </form>
+      </div>
+
+      <!-- Takk-melding -->
+      <div class="kontakt-takk" id="kontakt-takk" style="display:none;">
+        <div class="takk-inner">
+          <div class="takk-icon">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" width="64" height="64">
+              <circle cx="32" cy="32" r="28"/>
+              <polyline points="20,33 28,41 44,24"/>
+            </svg>
+          </div>
+          <h2>Meldingen er sendt!</h2>
+          <p>Takk for at du tok kontakt. Vi svarer deg innen 2 virkedager.<br />Sjekk gjerne søppelpost om du ikke hører fra oss.</p>
+          <a href="/" class="btn btn-ghost" style="margin-top: 2rem;">Tilbake til forsiden</a>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Kart/beliggenhet -->
+  <section class="kart-seksjon">
+    <div class="kart-tekst">
+      <span class="section-label">Beliggenhet</span>
+      <h3>Verkstedet ligger i Begna, Valdres</h3>
+      <p>Vi tar oppdrag over hele landet. Befaring, mål og møte kan gjøres hos deg – eller vi finner ut av det på telefon og e-post.</p>
+    </div>
+    <div class="kart-iframe">
+      <iframe
+        title="Kart over verkstedet"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2000!2d9.25!3d60.9!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNjDCsDU0JzAwLjAiTiA5wrAxNScwMC4wIkU!5e0!3m2!1sno!2sno!4v1234567890"
+        width="100%"
+        height="100%"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Møbelsnekkeri</span>
+        <p>Showroom: Ole Deviks vei 34, Oslo<br />Produksjon: Begna, Valdres</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigasjon</h4>
+        <ul>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="blogg.html">Guider</a></li>
+          <li><a href="/om-oss.html">Om oss</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Tjenester</h4>
+        <ul>
+          <li><a href="guide.html?type=kjokken">Kjøkken</a></li>
+          <li><a href="guide.html?type=garderobe">Garderobe</a></li>
+          <li><a href="guide.html?type=mobel">Møbler</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Kontakt</h4>
+        <a href="guide.html" class="btn btn-ghost btn-sm">Start forespørsel</a>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/millimetern_mobelsnekkeri/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p>© <span id="year"></span> På Millimetern Møbelsnekkeri AS · Org.nr. 989 794 248</p>
+        <div class="lang-switcher">
+          <a href="/kontakt.html" class="lang-btn lang-btn--active">🇳🇴 Norsk</a>
+          <a href="/en/contact.html" class="lang-btn">🇬🇧 English</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Filnavn-visning
+    document.getElementById('k-fil')?.addEventListener('change', function() {
+      const navn = this.files[0]?.name;
+      if (navn) document.querySelector('#k-file-area .file-upload-text').textContent = '✓ ' + navn;
+    });
+
+    // Skjema-innsending
+    document.getElementById('kontakt-form')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const knapp = this.querySelector('[type="submit"]');
+      knapp.disabled = true;
+      knapp.textContent = 'Sender…';
+      try {
+        const res = await fetch('https://formspree.io/f/mzdjddbw', { method: 'POST', body: new FormData(this) });
+        if (res.ok) {
+          document.getElementById('kontakt-form-wrapper').style.display = 'none';
+          document.getElementById('kontakt-takk').style.display = 'flex';
+        } else throw new Error();
+      } catch {
+        knapp.disabled = false;
+        knapp.textContent = 'Send melding';
+        alert('Noe gikk galt. Send oss en e-post på post@pamillimetern.no');
+      }
+    });
+  </script>
+</body>
+</html>

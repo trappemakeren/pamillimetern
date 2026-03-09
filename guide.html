@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start din forespørsel – På Millimetern Møbelsnekkeri</title>
+  <meta name="description" content="Fortell oss hva du har i tankene. Vår guide hjelper deg beskrive prosjektet ditt – vi svarer innen 2 virkedager." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/guide.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <link rel="alternate" hreflang="no" href="https://pamillimetern.no/guide.html" />
+  <link rel="alternate" hreflang="en" href="https://pamillimetern.no/en/request.html" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header scrolled" id="site-header">
+    <nav class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Møbelsnekkeri</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#tjenester">Tjenester</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blogg.html">Guider</a></li>
+        <li><a href="/om-oss.html">Om oss</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Meny" id="nav-toggle">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/#tjenester">Tjenester</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="blogg.html">Guider</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+  </div>
+
+  <!-- GUIDE WRAPPER -->
+  <main class="guide-wrapper">
+
+    <!-- Venstre: statisk info -->
+    <aside class="guide-aside">
+      <div class="guide-aside-inner">
+        <p class="guide-aside-label">Kom i gang</p>
+        <h1 class="guide-aside-title">La oss snakke om<br /><em>ditt prosjekt.</em></h1>
+        <p class="guide-aside-body">
+          Guiden tar deg gjennom fem enkle steg. Det tar rundt tre minutter,
+          og du forplikter deg til ingenting. Vi svarer innen 2 virkedager.
+        </p>
+        <div class="guide-steps-nav" id="guide-steps-nav">
+          <div class="guide-step-dot active" data-step="1">
+            <span class="dot"></span>
+            <span class="dot-label">Hva trenger du?</span>
+          </div>
+          <div class="guide-step-dot" data-step="2">
+            <span class="dot"></span>
+            <span class="dot-label">Rom og stil</span>
+          </div>
+          <div class="guide-step-dot" data-step="3">
+            <span class="dot"></span>
+            <span class="dot-label">Prioriteringer</span>
+          </div>
+          <div class="guide-step-dot" data-step="4">
+            <span class="dot"></span>
+            <span class="dot-label">Tidshorisont</span>
+          </div>
+          <div class="guide-step-dot" data-step="5">
+            <span class="dot"></span>
+            <span class="dot-label">Send forespørsel</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Høyre: steg-for-steg skjema -->
+    <section class="guide-main">
+      <div class="guide-progress">
+        <div class="guide-progress-bar" id="guide-progress-bar"></div>
+      </div>
+
+      <form action="https://formspree.io/f/mzdjddbw"
+        class="guide-form"
+        id="guide-form"
+        name="forespørsel"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <!-- Skjult Netlify-felt -->
+<!-- ── STEG 1: Hva trenger du? ── -->
+        <div class="guide-step active" id="step-1">
+          <div class="step-header">
+            <span class="step-number">Steg 1 av 5</span>
+            <h2>Hva trenger du?</h2>
+            <p>Velg det som passer best – du kan utdype senere.</p>
+          </div>
+          <div class="option-grid">
+            <label class="option-card">
+              <input type="radio" name="type" value="Kjøkken" required />
+              <span class="option-icon">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <rect x="4" y="28" width="40" height="14" rx="1"/>
+                  <rect x="4" y="8" width="40" height="18" rx="1"/>
+                  <line x1="24" y1="26" x2="24" y2="28"/>
+                </svg>
+              </span>
+              <span class="option-title">Kjøkken</span>
+              <span class="option-desc">Nytt kjøkken fra bunnen, eller oppgradering</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="type" value="Garderobe" />
+              <span class="option-icon">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <rect x="6" y="4" width="36" height="40" rx="1"/>
+                  <line x1="18" y1="4" x2="18" y2="44"/>
+                  <line x1="30" y1="4" x2="30" y2="44"/>
+                  <line x1="6" y1="20" x2="18" y2="20"/>
+                </svg>
+              </span>
+              <span class="option-title">Garderobe</span>
+              <span class="option-desc">Innebygd eller frittstående garderobeløsning</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="type" value="Møbel" />
+              <span class="option-icon">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <rect x="8" y="22" width="32" height="20" rx="1"/>
+                  <line x1="8" y1="30" x2="40" y2="30"/>
+                  <path d="M14 22 L14 10 Q14 6 24 6 Q34 6 34 10 L34 22"/>
+                </svg>
+              </span>
+              <span class="option-title">Møbel</span>
+              <span class="option-desc">Bord, hyller, sideboard eller annet enkeltmøbel</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="type" value="Annet" />
+              <span class="option-icon">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <circle cx="24" cy="24" r="18"/>
+                  <line x1="24" y1="14" x2="24" y2="34"/>
+                  <line x1="14" y1="24" x2="34" y2="24"/>
+                </svg>
+              </span>
+              <span class="option-title">Annet</span>
+              <span class="option-desc">Rekkverk, innredning, hytte, kontor eller annet</span>
+            </label>
+          </div>
+          <div class="step-nav">
+            <div></div>
+            <button type="button" class="btn btn-primary" onclick="neste(1)">Neste →</button>
+          </div>
+        </div>
+
+        <!-- ── STEG 2: Rom og stil ── -->
+        <div class="guide-step" id="step-2">
+          <div class="step-header">
+            <span class="step-number">Steg 2 av 5</span>
+            <h2>Fortell om rommet og stilen</h2>
+            <p>Omtrentlig er mer enn nok – vi spør om detaljer når vi møtes.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="rom-storrelse">Omtrentlig størrelse på rommet</label>
+            <div class="option-pills">
+              <label class="pill"><input type="radio" name="storrelse" value="Under 10 m²" /> Under 10 m²</label>
+              <label class="pill"><input type="radio" name="storrelse" value="10–20 m²" /> 10–20 m²</label>
+              <label class="pill"><input type="radio" name="storrelse" value="20–40 m²" /> 20–40 m²</label>
+              <label class="pill"><input type="radio" name="storrelse" value="Over 40 m²" /> Over 40 m²</label>
+              <label class="pill"><input type="radio" name="storrelse" value="Vet ikke" /> Vet ikke</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="stil">Hvilken stil tiltrekker deg mest?</label>
+            <div class="option-pills">
+              <label class="pill"><input type="radio" name="stil" value="Skandinavisk / minimalistisk" /> Skandinavisk / minimalistisk</label>
+              <label class="pill"><input type="radio" name="stil" value="Klassisk / tradisjonell" /> Klassisk / tradisjonell</label>
+              <label class="pill"><input type="radio" name="stil" value="Industriell / rå" /> Industriell / rå</label>
+              <label class="pill"><input type="radio" name="stil" value="Varm / rustikk" /> Varm / rustikk</label>
+              <label class="pill"><input type="radio" name="stil" value="Moderne / ren" /> Moderne / ren</label>
+              <label class="pill"><input type="radio" name="stil" value="Usikker / åpen" /> Usikker / åpen</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="beskrivelse-rom">Beskriv rommet eller situasjonen med egne ord</label>
+            <textarea
+              id="beskrivelse-rom"
+              name="beskrivelse_rom"
+              rows="4"
+              placeholder="F.eks.: Vi har et L-formet kjøkken på ca. 15 m², med skrå tak på den ene siden. Vi ønsker lyse farger og mye oppbevaringsplass..."
+            ></textarea>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost" onclick="forrige(2)">← Tilbake</button>
+            <button type="button" class="btn btn-primary" onclick="neste(2)">Neste →</button>
+          </div>
+        </div>
+
+        <!-- ── STEG 3: Prioriteringer ── -->
+        <div class="guide-step" id="step-3">
+          <div class="step-header">
+            <span class="step-number">Steg 3 av 5</span>
+            <h2>Hva er viktigst for deg?</h2>
+            <p>Velg gjerne flere. Det hjelper oss å forstå hva vi skal vektlegge.</p>
+          </div>
+
+          <div class="checkbox-grid">
+            <label class="check-card">
+              <input type="checkbox" name="prioritet" value="Funksjonalitet og oppbevaring" />
+              <span class="check-icon">✓</span>
+              <span class="check-title">Funksjonalitet</span>
+              <span class="check-desc">Praktisk løsning med god oppbevaring</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="prioritet" value="Estetikk og utseende" />
+              <span class="check-icon">✓</span>
+              <span class="check-title">Estetikk</span>
+              <span class="check-desc">Det skal se vakkert ut</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="prioritet" value="Bærekraft og naturlige materialer" />
+              <span class="check-icon">✓</span>
+              <span class="check-title">Bærekraft</span>
+              <span class="check-desc">Naturlige materialer og lang levetid</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="prioritet" value="Tilpasning til spesielle mål" />
+              <span class="check-icon">✓</span>
+              <span class="check-title">Tilpasning</span>
+              <span class="check-desc">Løsning for vanskelige mål eller rom</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="prioritet" value="Pris og budsjett" />
+              <span class="check-icon">✓</span>
+              <span class="check-title">Budsjett</span>
+              <span class="check-desc">Få mest mulig ut av pengene</span>
+            </label>
+            <label class="check-card">
+              <input type="checkbox" name="prioritet" value="Rask levering" />
+              <span class="check-icon">✓</span>
+              <span class="check-title">Rask levering</span>
+              <span class="check-desc">Ferdig innen en bestemt dato</span>
+            </label>
+          </div>
+
+          <div class="form-group" style="margin-top: 2rem;">
+            <label for="budsjett">Omtrentlig budsjett (valgfritt – vi gir uansett et ærlig estimat)</label>
+            <div class="option-pills">
+              <label class="pill"><input type="radio" name="budsjett" value="Under 50 000 kr" /> Under 50 000 kr</label>
+              <label class="pill"><input type="radio" name="budsjett" value="50 000–150 000 kr" /> 50–150 000 kr</label>
+              <label class="pill"><input type="radio" name="budsjett" value="150 000–300 000 kr" /> 150–300 000 kr</label>
+              <label class="pill"><input type="radio" name="budsjett" value="Over 300 000 kr" /> Over 300 000 kr</label>
+              <label class="pill"><input type="radio" name="budsjett" value="Ønsker ikke oppgi" /> Ønsker ikke oppgi</label>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost" onclick="forrige(3)">← Tilbake</button>
+            <button type="button" class="btn btn-primary" onclick="neste(3)">Neste →</button>
+          </div>
+        </div>
+
+        <!-- ── STEG 4: Tidshorisont ── -->
+        <div class="guide-step" id="step-4">
+          <div class="step-header">
+            <span class="step-number">Steg 4 av 5</span>
+            <h2>Når ønsker du å være ferdig?</h2>
+            <p>Vi tar imot begrensede oppdrag av gangen – jo tidligere du spør, jo bedre.</p>
+          </div>
+
+          <div class="option-grid option-grid--sm">
+            <label class="option-card">
+              <input type="radio" name="tidshorisont" value="Så snart som mulig" required />
+              <span class="option-title">Så snart som mulig</span>
+              <span class="option-desc">Vi trenger det ferdig snarest</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="tidshorisont" value="Innen 3 måneder" />
+              <span class="option-title">Innen 3 måneder</span>
+              <span class="option-desc">Planlegger for nær fremtid</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="tidshorisont" value="3–6 måneder" />
+              <span class="option-title">3–6 måneder</span>
+              <span class="option-desc">God tid til planlegging</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="tidshorisont" value="Over 6 måneder" />
+              <span class="option-title">Over 6 måneder</span>
+              <span class="option-desc">Tidlig fase, utforsker muligheter</span>
+            </label>
+          </div>
+
+          <div class="form-group" style="margin-top: 2rem;">
+            <label for="spesielle-datoer">Er det spesielle datoer vi bør kjenne til? (innflytting, renovering, gave o.l.)</label>
+            <input type="text" id="spesielle-datoer" name="spesielle_datoer" placeholder="F.eks.: Vi flytter inn 1. september..." />
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost" onclick="forrige(4)">← Tilbake</button>
+            <button type="button" class="btn btn-primary" onclick="neste(4)">Neste →</button>
+          </div>
+        </div>
+
+        <!-- ── STEG 5: Kontaktinfo og send ── -->
+        <div class="guide-step" id="step-5">
+          <div class="step-header">
+            <span class="step-number">Steg 5 av 5</span>
+            <h2>Nesten i mål.</h2>
+            <p>Fyll inn kontaktinformasjonen din, så hører du fra oss innen 2 virkedager.</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="navn">Navn <span class="required">*</span></label>
+              <input type="text" id="navn" name="navn" required placeholder="Ditt fulle navn" />
+            </div>
+            <div class="form-group">
+              <label for="telefon">Telefon</label>
+              <input type="tel" id="telefon" name="telefon" placeholder="41 23 45 67" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="epost">E-post <span class="required">*</span></label>
+            <input type="email" id="epost" name="epost" required placeholder="din@epost.no" />
+          </div>
+
+          <div class="form-group">
+            <label for="adresse">Adresse / sted der arbeidet skal utføres</label>
+            <input type="text" id="adresse" name="adresse" placeholder="F.eks.: Storgata 12, Oslo" />
+          </div>
+
+          <div class="form-group">
+            <label for="tilleggsinfo">Noe annet vi bør vite?</label>
+            <textarea
+              id="tilleggsinfo"
+              name="tilleggsinfo"
+              rows="4"
+              placeholder="Bilder, tegninger, referanser, spørsmål – alt er nyttig."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="bilde">Last opp bilde eller tegning (valgfritt)</label>
+            <div class="file-upload" id="file-upload-area">
+              <input type="file" id="bilde" name="bilde" accept="image/*,.pdf" />
+              <span class="file-upload-text">Klikk for å velge fil, eller dra hit</span>
+              <span class="file-upload-hint">JPG, PNG eller PDF – maks 10 MB</span>
+            </div>
+          </div>
+
+          <div class="form-group form-consent">
+            <label class="check-inline">
+              <input type="checkbox" name="samtykke" required />
+              <span>Jeg er inneforstått med at informasjonen brukes til å besvare forespørselen min.</span>
+            </label>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost" onclick="forrige(5)">← Tilbake</button>
+            <button type="submit" class="btn btn-primary btn-large">Send forespørsel →</button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- TAKK-MELDING (vises etter innsending) -->
+      <div class="guide-takk" id="guide-takk" style="display:none;">
+        <div class="takk-inner">
+          <div class="takk-icon">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" width="64" height="64">
+              <circle cx="32" cy="32" r="28"/>
+              <polyline points="20,33 28,41 44,24"/>
+            </svg>
+          </div>
+          <h2>Takk for forespørselen!</h2>
+          <p>Vi har mottatt meldingen din og svarer innen 2 virkedager. Sjekk gjerne innboksen din – også søppelpost.</p>
+          <a href="/" class="btn btn-ghost" style="margin-top: 1.5rem;">Tilbake til forsiden</a>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/guide.js"></script>
+</body>
+</html>

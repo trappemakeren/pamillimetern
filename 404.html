@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Siden finnes ikke – På Millimetern</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <style>
+    .feilside {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: var(--clr-bg-dark);
+      color: var(--clr-white);
+    }
+    .feilside-tall {
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 20vw, 14rem);
+      font-weight: 300;
+      line-height: 1;
+      color: rgba(253,250,245,0.08);
+      letter-spacing: -0.04em;
+      margin-bottom: -1rem;
+    }
+    .feilside h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 300;
+      color: var(--clr-white);
+      margin-bottom: 1rem;
+    }
+    .feilside h1 em { color: var(--clr-accent-lt); font-style: italic; }
+    .feilside p {
+      font-size: 1rem;
+      color: rgba(253,250,245,0.55);
+      max-width: 44ch;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+    .feilside-lenker {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header scrolled" id="site-header">
+    <nav class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Møbelsnekkeri</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#tjenester">Tjenester</a></li>
+        <li><a href="/portfolio.html">Portfolio</a></li>
+        <li><a href="/blogg.html">Guider</a></li>
+        <li><a href="/om-oss.html">Om oss</a></li>
+        <li><a href="/guide.html" class="nav-cta">Start forespørsel</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Meny" id="nav-toggle"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+
+  <main class="feilside">
+    <div class="feilside-tall">404</div>
+    <h1>Denne siden finnes<br /><em>ikke lenger.</em></h1>
+    <p>Det kan hende lenken er utdatert, eller at adressen er skrevet feil. Her er noen steder du kan gå i stedet:</p>
+    <div class="feilside-lenker">
+      <a href="/" class="btn btn-primary">Til forsiden</a>
+      <a href="/portfolio.html" class="btn btn-ghost">Se portfolio</a>
+      <a href="/guide.html" class="btn btn-ghost">Start forespørsel</a>
+    </div>
+  </main>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

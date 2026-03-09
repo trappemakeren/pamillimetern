@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio – På Millimetern Møbelsnekkeri</title>
+  <meta name="description" content="Se utvalgte arbeider fra På Millimetern – skreddersydde kjøkken, garderober og møbler laget i Valdres." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/portfolio-page.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <link rel="alternate" hreflang="no" href="https://pamillimetern.no/portfolio.html" />
+  <link rel="alternate" hreflang="en" href="https://pamillimetern.no/en/portfolio.html" />
+</head>
+<body>
+
+  <header class="site-header scrolled" id="site-header">
+    <nav class="nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Møbelsnekkeri</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#tjenester">Tjenester</a></li>
+        <li><a href="portfolio.html" class="nav-active">Portfolio</a></li>
+        <li><a href="blogg.html">Guider</a></li>
+        <li><a href="/om-oss.html">Om oss</a></li>
+        <li><a href="guide.html" class="nav-cta">Start forespørsel</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Meny" id="nav-toggle">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/#tjenester">Tjenester</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="blogg.html">Guider</a></li>
+      <li><a href="guide.html">Start forespørsel</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="portfolio-hero">
+    <div class="portfolio-hero-inner">
+      <span class="section-label">Våre arbeider</span>
+      <h1>Hvert prosjekt er<br /><em>unikt.</em></h1>
+      <p>Et utvalg av det vi har skapt – kjøkken, garderober og møbler laget til hjem og prosjekter på Østlandet og over hele landet.</p>
+    </div>
+  </section>
+
+  <!-- FILTER -->
+  <section class="portfolio-filter-seksjon">
+    <div class="portfolio-filter-inner">
+      <div class="filter-knapper" id="filter-knapper">
+        <button class="filter-btn active" data-kategori="Alle">Alle</button>
+        <button class="filter-btn" data-kategori="Kjøkken">Kjøkken</button>
+        <button class="filter-btn" data-kategori="Garderobe">Garderobe</button>
+        <button class="filter-btn" data-kategori="Møbler">Møbler</button>
+        <button class="filter-btn" data-kategori="Annet">Annet</button>
+      </div>
+      <span class="antall-visning" id="antall-visning"></span>
+    </div>
+  </section>
+
+  <!-- GALLERI -->
+  <section class="portfolio-galleri-seksjon">
+    <div class="portfolio-galleri" id="portfolio-galleri">
+      <div class="portfolio-spinner">Laster prosjekter…</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <div class="cta-band-inner">
+      <h2>Inspirert? La oss lage<br />noe <em>for deg.</em></h2>
+      <p>Fortell oss hva du ser for deg. Vi svarer innen 2 virkedager.</p>
+      <a href="guide.html" class="btn btn-primary btn-large">Start din forespørsel</a>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" style="display:none;">
+    <button class="lightbox-lukk" id="lightbox-lukk" aria-label="Lukk">✕</button>
+    <button class="lightbox-forrige" id="lightbox-forrige" aria-label="Forrige">‹</button>
+    <div class="lightbox-innhold">
+      <div class="lightbox-bilde-wrapper">
+        <!-- Slideshow -->
+        <div class="slideshow" id="slideshow">
+          <img src="" alt="" id="lightbox-bilde" class="slide aktiv" />
+          <button class="slide-forrige" id="slide-forrige" aria-label="Forrige bilde">‹</button>
+          <button class="slide-neste" id="slide-neste" aria-label="Neste bilde">›</button>
+          <!-- Bilde-teller -->
+          <div class="slideshow-teller" id="slideshow-teller"></div>
+        </div>
+        <!-- Thumbnails -->
+        <div class="slideshow-thumbnails" id="slideshow-thumbnails"></div>
+      </div>
+      <div class="lightbox-info">
+        <span class="lightbox-kategori" id="lightbox-kategori"></span>
+        <h3 id="lightbox-tittel"></h3>
+        <p id="lightbox-beskrivelse"></p>
+        <a href="guide.html" class="btn btn-primary" style="margin-top:1.5rem;">Start lignende prosjekt</a>
+      </div>
+    </div>
+    <button class="lightbox-neste" id="lightbox-neste" aria-label="Neste">›</button>
+  </div>
+  <div class="lightbox-bakgrunn" id="lightbox-bakgrunn" style="display:none;"></div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Møbelsnekkeri</span>
+        <p>Showroom: Ole Deviks vei 34, Oslo<br />Produksjon: Begna, Valdres</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigasjon</h4>
+        <ul>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="blogg.html">Guider</a></li>
+          <li><a href="/om-oss.html">Om oss</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Tjenester</h4>
+        <ul>
+          <li><a href="guide.html?type=kjokken">Kjøkken</a></li>
+          <li><a href="guide.html?type=garderobe">Garderobe</a></li>
+          <li><a href="guide.html?type=mobel">Møbler</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Kontakt</h4>
+        <a href="guide.html" class="btn btn-ghost btn-sm">Start forespørsel</a>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/millimetern_mobelsnekkeri/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p>© <span id="year"></span> På Millimetern Møbelsnekkeri AS · Org.nr. 989 794 248</p>
+        <div class="lang-switcher">
+          <a href="/portfolio.html" class="lang-btn lang-btn--active">🇳🇴 Norsk</a>
+          <a href="/en/portfolio.html" class="lang-btn">🇬🇧 English</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/portfolio-page.js"></script>
+</body>
+</html>

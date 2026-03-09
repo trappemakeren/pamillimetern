@@ -1,0 +1,359 @@
+/* =============================================
+   På Millimetern – tjeneste.css
+   Stilregler for tjenestesider og om-oss
+   ============================================= */
+
+/* ── Hero ── */
+.tjeneste-hero {
+  background: var(--clr-bg-dark);
+  padding: calc(72px + var(--space-xl)) var(--space-md) var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+.tjeneste-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(196,154,108,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.tjeneste-hero-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  position: relative;
+}
+.tjeneste-hero h1 {
+  color: var(--clr-white);
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 1.12;
+  margin-bottom: 1.25rem;
+  max-width: 16ch;
+}
+.tjeneste-hero h1 em { color: var(--clr-accent-lt); font-style: italic; }
+.tjeneste-hero .ingress {
+  font-size: 1.1rem;
+  color: rgba(253,250,245,0.65);
+  line-height: 1.75;
+  max-width: 54ch;
+  margin-bottom: 2.5rem;
+}
+.tjeneste-hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* ── Intro-seksjon ── */
+.tjeneste-intro { padding: var(--space-xl) var(--space-md); background: var(--clr-bg); }
+.tjeneste-intro-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: var(--space-xl);
+  align-items: start;
+}
+.tjeneste-intro-tekst h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  margin-bottom: 1.25rem;
+  max-width: 28ch;
+}
+.tjeneste-intro-tekst p {
+  color: var(--clr-body);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+  max-width: 60ch;
+}
+.tjeneste-intro-fakta {
+  background: var(--clr-bg-warm);
+  border: 1px solid var(--clr-border);
+  padding: var(--space-md);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.fakta-rad { display: flex; flex-direction: column; gap: 0.25rem; }
+.fakta-tall {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--clr-ink);
+  line-height: 1;
+}
+.fakta-tekst {
+  font-size: 0.8rem;
+  color: var(--clr-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Prosess ── */
+.tjeneste-prosess {
+  padding: var(--space-xl) var(--space-md);
+  background: var(--clr-bg-warm);
+}
+.tjeneste-prosess .section-header { max-width: var(--max-w); margin: 0 auto var(--space-lg); }
+.prosess-steg {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--clr-border);
+}
+.prosess-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  border-bottom: 1px solid var(--clr-border);
+  transition: background 0.2s;
+}
+.prosess-item:last-child { border-bottom: none; }
+.prosess-item:hover { background: rgba(139,94,60,0.03); }
+.prosess-nummer {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: rgba(28,25,21,0.12);
+  padding: var(--space-md);
+  display: flex;
+  align-items: flex-start;
+  padding-top: calc(var(--space-md) + 0.2rem);
+  line-height: 1;
+}
+.prosess-innhold {
+  padding: var(--space-md) var(--space-md) var(--space-md) 0;
+  border-left: 1px solid var(--clr-border);
+}
+.prosess-innhold h3 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+  color: var(--clr-ink);
+}
+.prosess-innhold p { font-size: 0.95rem; color: var(--clr-body); line-height: 1.75; }
+
+/* ── Valg-grid ── */
+.tjeneste-valg { padding: var(--space-xl) var(--space-md); background: var(--clr-bg); }
+.tjeneste-valg .section-header { max-width: var(--max-w); margin: 0 auto var(--space-lg); }
+.valg-grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--clr-border);
+  border: 1px solid var(--clr-border);
+}
+.valg-kort {
+  background: var(--clr-bg);
+  padding: var(--space-md);
+  transition: background 0.2s;
+}
+.valg-kort:hover { background: var(--clr-bg-warm); }
+.valg-kort h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+  color: var(--clr-ink);
+}
+.valg-kort p { font-size: 0.9rem; color: var(--clr-body); line-height: 1.7; }
+
+/* ── Eksempler-grid (møbler) ── */
+.tjeneste-eksempler { padding: var(--space-xl) var(--space-md); background: var(--clr-bg-warm); }
+.tjeneste-eksempler .section-header { max-width: var(--max-w); margin: 0 auto var(--space-lg); }
+.eksempler-grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+.eksempel-kort {
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-border);
+  padding: var(--space-md);
+  border-radius: 2px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.eksempel-kort:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(28,25,21,0.08);
+}
+.eksempel-ikon {
+  width: 48px; height: 48px;
+  color: var(--clr-accent);
+  margin-bottom: 1rem;
+}
+.eksempel-ikon svg { width: 100%; height: 100%; }
+.eksempel-kort h3 { font-size: 1rem; font-weight: 500; margin-bottom: 0.6rem; color: var(--clr-ink); }
+.eksempel-kort p { font-size: 0.88rem; color: var(--clr-body); line-height: 1.7; }
+
+/* ── Pris-seksjon ── */
+.tjeneste-pris {
+  padding: var(--space-xl) var(--space-md);
+  background: var(--clr-bg-dark);
+  color: var(--clr-white);
+}
+.tjeneste-pris-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+.tjeneste-pris-tekst .section-label { color: var(--clr-accent-lt); }
+.tjeneste-pris-tekst h2 {
+  color: var(--clr-white);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  margin-bottom: 1.25rem;
+}
+.tjeneste-pris-tekst p {
+  color: rgba(253,250,245,0.65);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+.pris-linje {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(253,250,245,0.1);
+  font-size: 0.95rem;
+  color: rgba(253,250,245,0.75);
+  gap: 1rem;
+}
+.pris-linje:first-child { border-top: 1px solid rgba(253,250,245,0.1); }
+.pris-linje span:last-child {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--clr-accent-lt);
+  white-space: nowrap;
+}
+.pris-linje--note { font-size: 0.78rem; color: rgba(253,250,245,0.35); border-bottom: none; }
+.pris-linje--note span:last-child { color: rgba(253,250,245,0.35); font-family: var(--font-body); font-size: 0.78rem; }
+
+/* ── Om oss-spesifikke seksjoner ── */
+.om-historien { padding: var(--space-xl) var(--space-md); background: var(--clr-bg); }
+.om-historien-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--space-xl);
+  align-items: start;
+}
+.om-historien-tekst h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  margin-bottom: 1.25rem;
+}
+.om-historien-tekst p {
+  color: var(--clr-body);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+  max-width: 62ch;
+}
+.om-historien-sitat {
+  background: var(--clr-bg-dark);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: 2px;
+  position: sticky;
+  top: 100px;
+}
+.om-historien-sitat blockquote {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--clr-white);
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+  quotes: none;
+}
+.om-historien-sitat cite {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-accent-lt);
+}
+
+.om-filosofi { padding: var(--space-xl) var(--space-md); background: var(--clr-bg-warm); }
+.om-filosofi .section-header { max-width: var(--max-w); margin: 0 auto var(--space-lg); }
+.filosofi-grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+.filosofi-kort {
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-border);
+  padding: var(--space-md);
+}
+.filosofi-nummer {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 300;
+  color: rgba(28,25,21,0.12);
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+.filosofi-kort h3 { font-size: 1.05rem; font-weight: 500; margin-bottom: 0.75rem; color: var(--clr-ink); }
+.filosofi-kort p { font-size: 0.9rem; color: var(--clr-body); line-height: 1.75; }
+
+.om-verkstedet { padding: var(--space-xl) var(--space-md); background: var(--clr-bg); }
+.om-verkstedet-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: var(--space-xl);
+  align-items: start;
+}
+.om-verkstedet-tekst h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  margin-bottom: 1.25rem;
+}
+.om-verkstedet-tekst p {
+  color: var(--clr-body);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+  max-width: 62ch;
+}
+.om-verkstedet-detaljer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.verksted-detalj h4 {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  margin-bottom: 0.3rem;
+}
+.verksted-detalj p, .verksted-detalj a {
+  font-size: 0.95rem;
+  color: var(--clr-body);
+  line-height: 1.5;
+  text-decoration: none;
+}
+.verksted-detalj a:hover { color: var(--clr-accent); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .tjeneste-intro-inner,
+  .tjeneste-pris-inner,
+  .om-historien-inner,
+  .om-verkstedet-inner { grid-template-columns: 1fr; }
+  .om-historien-sitat { position: static; }
+  .valg-grid,
+  .filosofi-grid,
+  .eksempler-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .tjeneste-hero-cta { flex-direction: column; }
+  .valg-grid,
+  .filosofi-grid,
+  .eksempler-grid { grid-template-columns: 1fr; }
+  .prosess-item { grid-template-columns: 56px 1fr; }
+  .prosess-nummer { font-size: 1.8rem; padding: var(--space-sm); }
+  .prosess-innhold { padding: var(--space-sm) var(--space-sm) var(--space-sm) 0; border-left: none; }
+}
