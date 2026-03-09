@@ -54,11 +54,10 @@ function ytKortUrl(id) {
     + `&controls=0&disablekb=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`;
 }
 
-// ── YouTube embed-URL for lightbox (med lyd-kontroll synlig, autoplay) ──
+// ── YouTube embed-URL for lightbox – klar til avspilling, bruker trykker play ──
 function ytLightboxUrl(id) {
   return `https://www.youtube-nocookie.com/embed/${id}`
-    + `?autoplay=1&mute=1&loop=1&playlist=${id}`
-    + `&modestbranding=1&rel=0&iv_load_policy=3`;
+    + `?modestbranding=1&rel=0&iv_load_policy=3`;
 }
 
 // ── YouTube thumbnail som stillbilde ──
