@@ -65,6 +65,12 @@ function ytThumbnail(id) {
   return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 }
 
+// ── Selvhostet video-URL (GitHub Pages /video/-mappe) ──
+const VIDEO_BASE = '/pamillimetern/video/';
+function selvhostetVideoUrl(filnavn) {
+  return VIDEO_BASE + filnavn.trim();
+}
+
 // ── Hent alle bilder fra en Drive-mappe via API ──
 async function hentMappebilder(mappeId) {
   if (!mappeId || !mappeId.trim()) return [];
@@ -154,6 +160,16 @@ async function lastProsjekter() {
         if (ytID) medier.push({ type: 'youtube', id: ytID, navn: 'Video' });
       }
 
+      // 4. Selvhostede videoer fra video_url-kolonne (filnavn i /video/-mappen)
+      // Støtter semikolonseparert liste, f.eks. "IMG_7442.mp4;IMG_7443.mp4"
+      const videoKolonne = p.video_url || '';
+      if (videoKolonne.trim()) {
+        const videoFiler = videoKolonne.split(/[;,]/).map(s => s.trim()).filter(Boolean);
+        for (const fil of videoFiler) {
+          medier.push({ type: 'video', url: selvhostetVideoUrl(fil), navn: fil });
+        }
+      }
+
       return { ...p, kategori, _medier: medier };
     }));
 
@@ -186,16 +202,20 @@ function kortHTML(p, i) {
   const farge  = ['#D4C5B0','#C9B99A','#BFB0A0','#D9CDBF','#CFC0AD','#C4B5A2'][i % 6];
   const medier = p._medier || [];
 
-  // Foretrekk første bilde som forsidebilde; fall tilbake på YouTube-thumbnail
-  const bildeMedium = medier.find(m => m.type === 'bilde');
-  const ytMedium    = medier.find(m => m.type === 'youtube');
-  const harVideo    = !!ytMedium;
+  // Foretrekk første bilde som forsidebilde; fall tilbake på video-thumbnail
+  const bildeMedium  = medier.find(m => m.type === 'bilde');
+  const ytMedium     = medier.find(m => m.type === 'youtube');
+  const videoMedium  = medier.find(m => m.type === 'video');
+  const harVideo     = !!(ytMedium || videoMedium);
 
   let mediEl;
   if (bildeMedium) {
     mediEl = `<img src="${driveUrl(bildeMedium.id)}" alt="${p.tittel}" loading="lazy" />`;
+  } else if (videoMedium) {
+    // Selvhostet video – autoplay muted loop som bakgrunn i kortet
+    mediEl = `<video src="${videoMedium.url}" autoplay muted loop playsinline
+      class="pgalleri-video" aria-hidden="true"></video>`;
   } else if (ytMedium) {
-    // Ingen bilde – vis YouTube-thumbnail som forsidebilde
     mediEl = `<img src="${ytThumbnail(ytMedium.id)}" alt="${p.tittel}" loading="lazy" />`;
   } else {
     mediEl = `<div class="pgalleri-placeholder" style="background:${farge}">
@@ -284,6 +304,14 @@ function oppdaterLysbilde() {
   }
 }
 
+// ── Fjern YouTube-iframe og selvhostet video fra lightbox ──
+function fjernYtIframe() {
+  const el = document.getElementById('lightbox-yt-iframe');
+  if (el) el.remove();
+  const vid = document.getElementById('lightbox-video-self');
+  if (vid) { vid.pause(); vid.remove(); }
+}
+
 // ── Bytt medium i slideshow ──
 function byttSlide(nyIndeks, medier) {
   medier = medier || (aktivProsjekter[lysbildeIndeks]._medier || []);
@@ -294,22 +322,37 @@ function byttSlide(nyIndeks, medier) {
   const medium = medier[slideIndeks];
   const img    = document.getElementById('lightbox-bilde');
 
-  // Rydd alltid opp YouTube-iframe fra forrige slide
+  // Rydd alltid opp video/iframe fra forrige slide
   fjernYtIframe();
 
   if (medium && medium.type === 'youtube') {
     // YouTube: lag iframe
     img.style.display = 'none';
     img.src = '';
-
     const iframe = document.createElement('iframe');
-    iframe.id            = 'lightbox-yt-iframe';
-    iframe.src           = ytLightboxUrl(medium.id);
-    iframe.allow         = 'autoplay; fullscreen';
+    iframe.id              = 'lightbox-yt-iframe';
+    iframe.src             = ytLightboxUrl(medium.id);
+    iframe.allow           = 'autoplay; fullscreen';
     iframe.allowFullscreen = true;
-    iframe.frameBorder   = '0';
-    iframe.className     = 'lightbox-yt-iframe';
+    iframe.frameBorder     = '0';
+    iframe.className       = 'lightbox-yt-iframe';
     img.parentNode.insertBefore(iframe, img);
+
+  } else if (medium && medium.type === 'video') {
+    // Selvhostet video – autoplay muted loop, full kontroll
+    img.style.display = 'none';
+    img.src = '';
+    const vid = document.createElement('video');
+    vid.id          = 'lightbox-video-self';
+    vid.src         = medium.url;
+    vid.autoplay    = true;
+    vid.muted       = true;
+    vid.loop        = true;
+    vid.playsInline = true;
+    vid.controls    = true;  // vis kontroller så bruker kan pause/spole
+    vid.className   = 'lightbox-video-self';
+    img.parentNode.insertBefore(vid, img);
+    vid.play().catch(() => {});
 
   } else {
     // Bilde
