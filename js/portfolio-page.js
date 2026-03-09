@@ -23,7 +23,7 @@ let aktivProsjekter = [];
 
 // ── Er dette en video-fil? ──
 function erVideo(filnavn) {
-  return /\.(mp4|mov|webm)$/i.test(filnavn || '');
+  return /\.(mp4|mov|webm|m4v)$/i.test(filnavn || '');
 }
 
 // ── Google Drive bilde-URL ──
@@ -65,9 +65,10 @@ async function hentMappebilder(mappeId) {
     const data = await res.json();
     // Returner objekt med id, navn og type for hvert media
     return (data.files || []).map(f => ({
-      id:      f.id,
-      navn:    f.name,
-      erVideo: f.mimeType.startsWith('video/'),
+      id:       f.id,
+      navn:     f.name,
+      erVideo:  f.mimeType.startsWith('video/'),
+      mimeType: f.mimeType,
     }));
   } catch {
     return [];
@@ -162,8 +163,10 @@ function kortHTML(p, i) {
     </div>`;
   } else if (forste.erVideo) {
     // Video som bakgrunn i kortet – autoplay, muted, loop, ingen kontroller
-    mediEl = `<video src="${driveVideoUrl(forste.id)}" autoplay muted loop playsinline
-                class="pgalleri-video" aria-hidden="true"></video>
+    const mimeType = (forste.mimeType === 'video/quicktime') ? 'video/mp4' : (forste.mimeType || 'video/mp4');
+    mediEl = `<video autoplay muted loop playsinline class="pgalleri-video" aria-hidden="true">
+                <source src="${driveVideoUrl(forste.id)}" type="${mimeType}">
+              </video>
               <div class="pgalleri-video-ikon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
                   <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.35)"/>
@@ -269,7 +272,9 @@ function byttSlide(nyIndeks, medier) {
       vid.style.cssText = 'max-width:100%;max-height:70vh;display:block;margin:auto;border-radius:4px;';
       img.parentNode.insertBefore(vid, img);
     }
-    vid.src           = driveVideoUrl(medium.id);
+    // Bruk source-element med riktig type for mov/mp4
+    const mimeType = (medium.mimeType === 'video/quicktime') ? 'video/mp4' : (medium.mimeType || 'video/mp4');
+    vid.innerHTML = `<source src="${driveVideoUrl(medium.id)}" type="${mimeType}">`;
     vid.style.display = 'block';
     vid.load();
     vid.play().catch(() => {});
