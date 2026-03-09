@@ -294,15 +294,35 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ── CSV-parser ──
+// RFC 4180-kompatibel parser – håndterer linjeskift og komma inne i anførselstegn
 function parseCSV(tekst) {
-  const linjer = tekst.trim().replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
-  const overskrifter = linjer[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, '_'));
-  return linjer.slice(1).filter(l => l.trim()).map(linje => {
-    const verdier = linje.split(',');
-    return Object.fromEntries(
-      overskrifter.map((h, i) => [h, (verdier[i] || '').replace(/^"|"$/g, '').trim()])
-    );
-  });
+  const rader = [];
+  let felt = [], verdi = '', iAnforsels = false;
+  const t = tekst.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+  for (let i = 0; i < t.length; i++) {
+    const c = t[i];
+    if (iAnforsels) {
+      if (c === '"' && t[i + 1] === '"') { verdi += '"'; i++; } // escaped ""
+      else if (c === '"') { iAnforsels = false; }
+      else { verdi += c; } // linjeskift inne i felt er lov
+    } else {
+      if (c === '"') { iAnforsels = true; }
+      else if (c === ',') { felt.push(verdi.trim()); verdi = ''; }
+      else if (c === '\n') {
+        felt.push(verdi.trim());
+        rader.push(felt);
+        felt = []; verdi = '';
+      } else { verdi += c; }
+    }
+  }
+  if (verdi || felt.length) { felt.push(verdi.trim()); if (felt.some(v => v)) rader.push(felt); }
+
+  if (rader.length < 2) return [];
+  const overskrifter = rader[0].map(h => h.toLowerCase().replace(/\s+/g, '_'));
+  return rader.slice(1)
+    .filter(rad => rad.some(v => v))
+    .map(rad => Object.fromEntries(overskrifter.map((h, i) => [h, rad[i] ?? ''])));
 }
 
 // ── Start ──
