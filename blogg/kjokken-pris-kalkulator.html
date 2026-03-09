@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <base href="/pamillimetern/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kjøkken prisguide og kalkulator – hva koster et skreddersydd kjøkken? – På Millimetern</title>
+  <meta name="description" content="Beregn hva et skreddersydd kjøkken fra snekker kan koste. Interaktiv kalkulator med forklaring av hva som påvirker prisen – fra størrelse og materiale til finish og tillegg." />
+  <link rel="canonical" href="https://pamillimetern.no/blogg/kjokken-pris-kalkulator.html" />
+  <link rel="alternate" hreflang="no" href="https://pamillimetern.no/blogg/kjokken-pris-kalkulator.html" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Kjøkken prisguide og kalkulator",
+    "author": { "@type": "Organization", "name": "På Millimetern Møbelsnekkeri" },
+    "publisher": { "@type": "Organization", "name": "På Millimetern Møbelsnekkeri" },
+    "datePublished": "2024-03-01",
+    "description": "Interaktiv kalkulator for pris på skreddersydd kjøkken fra snekker."
+  }
+  </script>
+  <link rel="stylesheet" href="../css/fonts.css" />
+  <link rel="stylesheet" href="/pamillimetern/css/main.css" />
+  <link rel="stylesheet" href="/pamillimetern/css/fagfolk.css" />
+  <link rel="stylesheet" href="/pamillimetern/css/blogg.css" />
+  <link rel="stylesheet" href="/pamillimetern/css/responsive.css" />
+  <style>
+    /* ── Kalkulator ── */
+    .kalk-seksjon {
+      background: var(--clr-bg, #F5F0E8);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .kalk-seksjon h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--clr-ink, #1C1915);
+      margin-bottom: 0.25rem;
+    }
+    .kalk-seksjon > p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+    .kalk-rad {
+      margin-bottom: 1.5rem;
+    }
+    .kalk-rad label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--clr-ink, #1C1915);
+      margin-bottom: 0.5rem;
+    }
+    .kalk-rad label span {
+      font-weight: 400;
+      color: #888;
+      font-size: 0.82rem;
+    }
+    .kalk-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: #ddd;
+      outline: none;
+      cursor: pointer;
+    }
+    .kalk-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #8B5E3C;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .kalk-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #8B5E3C;
+      cursor: pointer;
+      border: none;
+    }
+    .kalk-verdi {
+      display: inline-block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #8B5E3C;
+      min-width: 80px;
+      text-align: right;
+    }
+    .kalk-valg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+    }
+    .kalk-valg {
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      background: white;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      line-height: 1.4;
+    }
+    .kalk-valg:hover { border-color: #8B5E3C; }
+    .kalk-valg.valgt {
+      border-color: #8B5E3C;
+      background: #8B5E3C;
+      color: white;
+    }
+    .kalk-valg strong { display: block; font-size: 0.78rem; margin-top: 2px; opacity: 0.85; }
+    .kalk-skillelinje {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 1.5rem 0;
+    }
+    .kalk-tillegg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+    }
+    .kalk-tillegg {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      background: white;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .kalk-tillegg:hover { border-color: #8B5E3C; }
+    .kalk-tillegg.valgt { border-color: #8B5E3C; background: #fdf8f3; }
+    .kalk-tillegg input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: #8B5E3C;
+      flex-shrink: 0;
+    }
+    .kalk-tillegg-tekst { flex: 1; line-height: 1.4; }
+    .kalk-tillegg-tekst small { display: block; color: #888; font-size: 0.78rem; }
+
+    /* Resultat */
+    .kalk-resultat {
+      background: #1C1915;
+      color: #F5F0E8;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    .kalk-resultat h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      opacity: 0.7;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .kalk-pris-hoved {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      color: #C49A6C;
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+    .kalk-pris-sub {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      margin-bottom: 1.5rem;
+    }
+    .kalk-breakdown {
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .kalk-linje {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      opacity: 0.75;
+    }
+    .kalk-linje.total {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 0.5rem;
+      margin-top: 0.25rem;
+      opacity: 1;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .kalk-notat {
+      margin-top: 1.2rem;
+      font-size: 0.8rem;
+      opacity: 0.5;
+      line-height: 1.6;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1rem;
+    }
+    .kalk-cta-knapp {
+      display: block;
+      margin-top: 1.5rem;
+      background: #C49A6C;
+      color: #1C1915;
+      text-align: center;
+      padding: 14px 24px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .kalk-cta-knapp:hover { background: #d4aa7c; }
+
+    /* Info-bokser */
+    .info-boks {
+      background: #fdf8f3;
+      border-left: 3px solid #8B5E3C;
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .info-boks strong { display: block; margin-bottom: 0.25rem; color: #1C1915; }
+  </style>
+</head>
+<body>
+
+  <!-- ── B2B-stripe ── -->
+  <div class="b2b-stripe">
+    <p>Skreddersydde løsninger siden 2006 · Begna, Valdres</p>
+    <a href="/pamillimetern/fagfolk/" class="b2b-link">For entreprenører og arkitekter</a>
+  </div>
+
+  <header class="site-header scrolled" id="site-header">
+    <nav class="nav-inner">
+      <a href="/pamillimetern/" class="logo">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Møbelsnekkeri</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/pamillimetern/#tjenester">Tjenester</a></li>
+        <li><a href="/pamillimetern/portfolio.html">Portfolio</a></li>
+        <li><a href="/pamillimetern/blogg.html">Guider</a></li>
+        <li><a href="/pamillimetern/om-oss.html">Om oss</a></li>
+        <li><a href="/pamillimetern/guide.html" class="nav-cta">Start forespørsel</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Meny" id="nav-toggle"><span></span><span></span><span></span></button>
+    </nav>
+  </header>
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/pamillimetern/portfolio.html">Portfolio</a></li>
+      <li><a href="/pamillimetern/blogg.html">Guider</a></li>
+      <li><a href="/pamillimetern/guide.html">Start forespørsel</a></li>
+    </ul>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="artikkel-hero">
+    <div class="artikkel-hero-inner">
+      <div class="artikkel-meta">
+        <span class="artikkel-kategori">Kjøkken · Priser</span>
+        <span class="artikkel-meta-dot"></span>
+        <span class="artikkel-dato">Oppdatert mars 2026</span>
+      </div>
+      <h1 class="artikkel-tittel">Hva koster et skreddersydd kjøkken?<br><em>Finn ditt prisestimat</em></h1>
+      <p class="artikkel-ingress">Bruk kalkulatoren nedenfor for å få et realistisk prisestimat basert på ditt kjøkken. Tallene er basert på vår erfaring gjennom 20 år – ikke løfter vi ikke kan holde.</p>
+    </div>
+  </section>
+
+  <!-- ── ARTIKKEL + SIDEFELT ── -->
+  <div class="artikkel-wrapper">
+    <article class="artikkel-innhold">
+
+      <!-- KALKULATOR -->
+      <div class="kalk-seksjon" id="kalkulator">
+        <h2>Prisestimat-kalkulator</h2>
+        <p>Juster verdiene under – estimatet oppdateres automatisk.</p>
+
+        <!-- Størrelse -->
+        <div class="kalk-rad">
+          <label>
+            Løpende meter benkeplate
+            <span>Inkl. begge sider i L-kjøkken</span>
+          </label>
+          <label style="margin-bottom:0.4rem">
+            <span id="lm-verdi" class="kalk-verdi">3,5 lm</span>
+          </label>
+          <input type="range" class="kalk-slider" id="lm-slider"
+            min="2" max="8" step="0.5" value="3.5"
+            oninput="oppdater()" />
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#aaa;margin-top:4px">
+            <span>2 lm (lite)</span><span>5 lm (medium)</span><span>8 lm (stort)</span>
+          </div>
+        </div>
+
+        <hr class="kalk-skillelinje" />
+
+        <!-- Fronttype -->
+        <div class="kalk-rad">
+          <label>Fronttype</label>
+          <div class="kalk-valg-grid" id="front-valg">
+            <div class="kalk-valg valgt" data-gruppe="front" data-faktor="1.0" onclick="velg(this)">
+              Matt lakkert
+              <strong>Standard</strong>
+            </div>
+            <div class="kalk-valg" data-gruppe="front" data-faktor="1.1" onclick="velg(this)">
+              Blank lakkert
+              <strong>+10%</strong>
+            </div>
+            <div class="kalk-valg" data-gruppe="front" data-faktor="1.25" onclick="velg(this)">
+              Massiv eik
+              <strong>+25%</strong>
+            </div>
+            <div class="kalk-valg" data-gruppe="front" data-faktor="1.35" onclick="velg(this)">
+              Finert / spesial
+              <strong>+35%</strong>
+            </div>
+          </div>
+        </div>
+
+        <hr class="kalk-skillelinje" />
+
+        <!-- Skrog -->
+        <div class="kalk-rad">
+          <label>Skrogmateriale</label>
+          <div class="kalk-valg-grid" id="skrog-valg">
+            <div class="kalk-valg valgt" data-gruppe="skrog" data-faktor="1.0" onclick="velg(this)">
+              MDF / spånplate
+              <strong>Standard</strong>
+            </div>
+            <div class="kalk-valg" data-gruppe="skrog" data-faktor="1.15" onclick="velg(this)">
+              Bjerke multiplex
+              <strong>+15%</strong>
+            </div>
+            <div class="kalk-valg" data-gruppe="skrog" data-faktor="1.3" onclick="velg(this)">
+              Heltre / massiv
+              <strong>+30%</strong>
+            </div>
+          </div>
+        </div>
+
+        <hr class="kalk-skillelinje" />
+
+        <!-- Benkeplate -->
+        <div class="kalk-rad">
+          <label>Benkeplate</label>
+          <div class="kalk-valg-grid" id="benke-valg">
+            <div class="kalk-valg valgt" data-gruppe="benke" data-tillegg="0" onclick="velg(this)">
+              Laminat
+              <strong>Inkludert</strong>
+            </div>
+            <div class="kalk-valg" data-gruppe="benke" data-tillegg="8000" onclick="velg(this)">
+              Massiv tre
+              <strong>+8 000 kr</strong>
+            </div>
+            <div class="kalk-valg" data-gruppe="benke" data-tillegg="15000" onclick="velg(this)">
+              Kompositt / Silestone
+              <strong>+15 000 kr</strong>
+            </div>
+            <div class="kalk-valg" data-gruppe="benke" data-tillegg="25000" onclick="velg(this)">
+              Naturstein
+              <strong>+25 000 kr</strong>
+            </div>
+          </div>
+        </div>
+
+        <hr class="kalk-skillelinje" />
+
+        <!-- Tillegg -->
+        <div class="kalk-rad">
+          <label>Tilvalg og tillegg <span>Kryss av det som gjelder</span></label>
+          <div class="kalk-tillegg-grid">
+            <label class="kalk-tillegg" onclick="oppdaterTillegg(this)">
+              <input type="checkbox" value="12000" />
+              <div class="kalk-tillegg-tekst">
+                Integrerte hvitevarer
+                <small>+12 000 kr</small>
+              </div>
+            </label>
+            <label class="kalk-tillegg" onclick="oppdaterTillegg(this)">
+              <input type="checkbox" value="8000" />
+              <div class="kalk-tillegg-tekst">
+                Skuffeseksjon med demping
+                <small>+8 000 kr</small>
+              </div>
+            </label>
+            <label class="kalk-tillegg" onclick="oppdaterTillegg(this)">
+              <input type="checkbox" value="6000" />
+              <div class="kalk-tillegg-tekst">
+                Øy / midtblokk
+                <small>+6 000 kr</small>
+              </div>
+            </label>
+            <label class="kalk-tillegg" onclick="oppdaterTillegg(this)">
+              <input type="checkbox" value="9000" />
+              <div class="kalk-tillegg-tekst">
+                Spesialtilpasset ventilasjon
+                <small>+9 000 kr</small>
+              </div>
+            </label>
+            <label class="kalk-tillegg" onclick="oppdaterTillegg(this)">
+              <input type="checkbox" value="5000" />
+              <div class="kalk-tillegg-tekst">
+                Indirekte belysning
+                <small>+5 000 kr</small>
+              </div>
+            </label>
+            <label class="kalk-tillegg" onclick="oppdaterTillegg(this)">
+              <input type="checkbox" value="15000" />
+              <div class="kalk-tillegg-tekst">
+                Montering inkludert
+                <small>+15 000 kr</small>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- RESULTAT -->
+        <div class="kalk-resultat">
+          <h3>Ditt estimat</h3>
+          <div class="kalk-pris-hoved" id="pris-hoved">–</div>
+          <div class="kalk-pris-sub" id="pris-sub">eks. mva</div>
+          <div class="kalk-breakdown" id="breakdown"></div>
+          <p class="kalk-notat">
+            Dette er et veiledende estimat basert på gjennomsnittlige prosjekter vi har levert. Faktisk pris avhenger av romgeometri, tilgjengelighet, eventuelle byggetekniske utfordringer og materialprisene på det tidspunktet prosjektet starter. Kontakt oss for et gratis og uforpliktende tilbud.
+          </p>
+          <a href="/pamillimetern/guide.html" class="kalk-cta-knapp">
+            Få et reelt tilbud – det er gratis og uforpliktende →
+          </a>
+        </div>
+      </div>
+
+      <!-- ARTIKKEL-TEKST -->
+      <h2 id="hva-pavirker">Hva er det egentlig som påvirker prisen?</h2>
+      <p>Et skreddersydd kjøkken er ikke én ting – det er summen av veldig mange valg. Størrelse er det mest åpenbare, men fronten alene kan doble prisen på et ellers likt kjøkken. Her er de viktigste faktorene:</p>
+
+      <h2 id="storrelse">Størrelse og antall løpemeter</h2>
+      <p>Det vanligste målet er løpende meter (lm) benkeplate og skap. Et lite kjøkken starter gjerne på 2–3 lm, mens et medium L-kjøkken ligger rundt 4–5 lm og et stort U-kjøkken kan komme opp i 7–8 lm. Jo mer løpemeter, desto mer materialer og arbeidstid – men ikke alltid proporsjonalt. Et lite kjøkken med mange spesialdetaljer kan bli dyrere enn et stort standardoppsett.</p>
+
+      <div class="info-boks">
+        <strong>Tommelfingerregel</strong>
+        Vi regner typisk med 55 000–90 000 kr per løpemeter for et standard snekkerkjøkken med laminat benkeplate og matt front. Det vil si at et 3,5 lm kjøkken vanligvis havner mellom 190 000 og 315 000 kr eks. mva – avhengig av valg.
+      </div>
+
+      <h2 id="front">Frontvalget gjør størst utslag</h2>
+      <p>Fronten er det du ser og tar på – og den koster deretter. Matt lakkert MDF er vårt mest brukte front-materiale og fungerer godt i de aller fleste hjem. Blank lakkert er krevende å produsere riktig og koster noe mer. Massiv eik eller finert er en helt annen kategori – her betaler du for materialets egenverdi, og for at vi vet hvordan tre beveger seg.</p>
+
+      <h2 id="benkeplate">Benkeplate – her kan du spare eller bruke</h2>
+      <p>Laminat er undervurdert. Moderne laminatbenkeplater er svært robuste, enkle å rengjøre og finnes i hundrevis av uttrykk. Massiv tre er vakkert men krever vedlikehold. Kompositt og naturstein er de mest kostbare alternativene – men de er også de som tåler mest og gir kjøkkenet et løft som er vanskelig å kopiere.</p>
+
+      <h2 id="montering">Montering og rigg</h2>
+      <p>Mange glemmer å inkludere montering i budsjettene sine. Hos oss er montering et eget tilbud som avhenger av tilgjengelighet, avstand fra verksted og kompleksiteten i rommet. I Oslo-området regner vi typisk 15 000–25 000 kr for montering av et normalt kjøkken. Fjerntransport og overnattinger kommer i tillegg.</p>
+
+      <h2 id="sammenligning">Snekkerkjøkken vs. IKEA – hva er egentlig forskjellen?</h2>
+      <p>Et IKEA-kjøkken kan se bra ut i mange år, men det er bygget for en gjennomsnittlig romgeometri og gjennomsnittlige behov. Et snekkerkjøkken er bygget for deg og ditt rom – fra de faktiske målene til de faktiske ønskene. Sjenken som er nøyaktig like høy som ovnsluken, hjørneskapet som utnytter en skrå vegg, skuffene som er nøyaktig dype nok til grytene du har. Det er forskjellen.</p>
+      <p>Les mer i vår guide: <a href="ikea-vs-snekker-kjokken.html">IKEA-kjøkken eller snekkerkjøkken – hva er forskjellen?</a></p>
+
+      <!-- CTA -->
+      <div class="artikkel-cta">
+        <h3>Usikker på hva ditt kjøkken vil koste?</h3>
+        <p>Send oss en beskrivelse – vi gir deg et ærlig estimat uten forpliktelser.</p>
+        <a href="/pamillimetern/guide.html" class="btn btn-lys">Start forespørsel</a>
+      </div>
+
+    </article>
+
+    <!-- SIDEFELT -->
+    <aside class="artikkel-sidefelt">
+      <div class="sidefelt-kort">
+        <h4>Innhold</h4>
+        <ul class="toc">
+          <li><a href="#kalkulator">Prisestimat-kalkulator</a></li>
+          <li><a href="#hva-pavirker">Hva påvirker prisen?</a></li>
+          <li><a href="#storrelse">Størrelse og løpemeter</a></li>
+          <li><a href="#front">Frontvalget</a></li>
+          <li><a href="#benkeplate">Benkeplate</a></li>
+          <li><a href="#montering">Montering</a></li>
+          <li><a href="#sammenligning">vs. IKEA</a></li>
+        </ul>
+      </div>
+      <div class="sidefelt-kort">
+        <h4>Relaterte guider</h4>
+        <ul class="toc">
+          <li><a href="ikea-vs-snekker-kjokken.html">IKEA vs. snekker</a></li>
+          <li><a href="hvor-lang-tid-tar-kjokken.html">Tidsplan for kjøkken</a></li>
+          <li><a href="velge-kjokkenfront.html">Velge kjøkkenfront</a></li>
+          <li><a href="bestille-skreddersydde-mobeler.html">Bestille møbler</a></li>
+        </ul>
+      </div>
+      <div class="sidefelt-kort">
+        <h4>Klar for tilbud?</h4>
+        <p>Vi svarer innen 2 virkedager med et konkret estimat.</p>
+        <a href="/pamillimetern/guide.html" class="btn btn-ghost">Start forespørsel</a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- RELATERTE -->
+  <section class="relaterte">
+    <div class="relaterte-inner">
+      <span class="section-label">Les også</span>
+      <div class="relaterte-grid">
+        <div class="relatert-kort">
+          <span class="relatert-kat">Kjøkken</span>
+          <h4><a href="ikea-vs-snekker-kjokken.html">IKEA vs. snekkerkjøkken – hva er forskjellen?</a></h4>
+          <p>Alt du bør vite før du bestemmer deg.</p>
+        </div>
+        <div class="relatert-kort">
+          <span class="relatert-kat">Kjøkken</span>
+          <h4><a href="hvor-lang-tid-tar-kjokken.html">Hvor lang tid tar det å få laget et kjøkken?</a></h4>
+          <p>Fra første samtale til ferdig montert.</p>
+        </div>
+        <div class="relatert-kort">
+          <span class="relatert-kat">Kjøkken</span>
+          <h4><a href="velge-kjokkenfront.html">Hvordan velge riktig kjøkkenfront?</a></h4>
+          <p>Matt, blank, tre eller lakk – vi hjelper deg velge.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-main">På Millimetern</span>
+        <span class="logo-sub">Møbelsnekkeri</span>
+        <p>Begnavegen 232, 2937 Begna<br />Valdres, Norge</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigasjon</h4>
+        <ul>
+          <li><a href="/pamillimetern/portfolio.html">Portfolio</a></li>
+          <li><a href="/pamillimetern/blogg.html">Guider</a></li>
+          <li><a href="/pamillimetern/kontakt.html">Kontakt</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Tjenester</h4>
+        <ul>
+          <li><a href="/pamillimetern/kjokken.html">Kjøkken</a></li>
+          <li><a href="/pamillimetern/garderobe.html">Garderobe</a></li>
+          <li><a href="/pamillimetern/mobeler.html">Møbler</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Kontakt</h4>
+        <a href="/pamillimetern/guide.html" class="btn btn-ghost btn-sm">Start forespørsel</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p>© <span id="year"></span> På Millimetern Møbelsnekkeri AS · Org.nr. 989 794 248</p>
+        <div>
+          <a href="/pamillimetern/personvern.html" style="font-size:0.8rem;opacity:0.6;color:inherit;">Personvern</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/pamillimetern/js/main.js"></script>
+  <script src="/pamillimetern/js/analytics.js"></script>
+  <script src="/pamillimetern/js/personvern-banner.js"></script>
+
+  <script>
+  /* ── Kalkulator-logikk ── */
+
+  // Basispris per løpemeter (kr eks. mva)
+  const BASE_PER_LM = 70000;
+
+  let tilleggSum = 0;
+
+  function velg(el) {
+    const gruppe = el.dataset.gruppe;
+    document.querySelectorAll(`[data-gruppe="${gruppe}"]`).forEach(b => b.classList.remove('valgt'));
+    el.classList.add('valgt');
+    oppdater();
+  }
+
+  function oppdaterTillegg(label) {
+    // Toggle valgt-klasse visuelt
+    setTimeout(() => {
+      document.querySelectorAll('.kalk-tillegg').forEach(l => {
+        l.classList.toggle('valgt', l.querySelector('input').checked);
+      });
+      oppdater();
+    }, 0);
+  }
+
+  function hentFaktor(gruppe) {
+    const valgt = document.querySelector(`[data-gruppe="${gruppe}"].valgt`);
+    return valgt ? parseFloat(valgt.dataset.faktor || 1) : 1;
+  }
+
+  function hentTillegg(gruppe) {
+    const valgt = document.querySelector(`[data-gruppe="${gruppe}"].valgt`);
+    return valgt ? parseInt(valgt.dataset.tillegg || 0) : 0;
+  }
+
+  function hentTilleggSum() {
+    let sum = 0;
+    document.querySelectorAll('.kalk-tillegg input:checked').forEach(cb => {
+      sum += parseInt(cb.value);
+    });
+    return sum;
+  }
+
+  function formater(kr) {
+    return new Intl.NumberFormat('nb-NO', { style: 'currency', currency: 'NOK', maximumFractionDigits: 0 }).format(kr);
+  }
+
+  function oppdater() {
+    const lm = parseFloat(document.getElementById('lm-slider').value);
+    document.getElementById('lm-verdi').textContent = lm.toFixed(1).replace('.', ',') + ' lm';
+
+    const frontFaktor  = hentFaktor('front');
+    const skrogFaktor  = hentFaktor('skrog');
+    const benkeTillegg = hentTillegg('benke');
+    const tillegg      = hentTilleggSum();
+
+    // Beregning
+    const basisPris   = lm * BASE_PER_LM;
+    const frontKost   = basisPris * (frontFaktor - 1);
+    const skrogKost   = basisPris * (skrogFaktor - 1);
+    const totalFørTillegg = basisPris + frontKost + skrogKost + benkeTillegg;
+    const total       = totalFørTillegg + tillegg;
+
+    // Vis resultat
+    document.getElementById('pris-hoved').textContent = formater(total);
+    document.getElementById('pris-sub').textContent   = `eks. mva · ca. ${formater(total * 1.25)} inkl. mva`;
+
+    // Breakdown
+    const bd = document.getElementById('breakdown');
+    const linjer = [
+      ['Basisprodukt (' + lm.toFixed(1).replace('.', ',') + ' lm)', formater(basisPris)]
+    ];
+    if (frontKost > 0)   linjer.push(['Fronttillegg', '+' + formater(frontKost)]);
+    if (skrogKost > 0)   linjer.push(['Skrogtillegg', '+' + formater(skrogKost)]);
+    if (benkeTillegg > 0) linjer.push(['Benkeplaten', '+' + formater(benkeTillegg)]);
+    if (tillegg > 0)     linjer.push(['Tilvalg', '+' + formater(tillegg)]);
+    linjer.push(['— Total', formater(total)]);
+
+    bd.innerHTML = linjer.map((l, i) =>
+      `<div class="kalk-linje${i === linjer.length - 1 ? ' total' : ''}">
+        <span>${l[0]}</span><span>${l[1]}</span>
+      </div>`
+    ).join('');
+  }
+
+  // Første beregning
+  oppdater();
+
+  // År i footer
+  document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
