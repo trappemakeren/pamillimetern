@@ -1,89 +1,32 @@
 # På Millimetern Møbelsnekkeri – Nettside
 
-## Teknisk oversikt
-- **Hosting:** GitHub Pages (gratis, ingen credits)
-- **Kode:** Ren HTML/CSS/JS
-- **Skjema:** Formspree (gratis inntil 50 innleveringer/mnd)
-- **Innhold:** Google Sheets → CSV (portfolio og blogg)
-- **Fonter:** Cormorant Garamond + DM Sans (Google Fonts)
+Live: https://trappemakeren.github.io/pamillimetern/
+Fremtidig domene: https://pamillimetern.no
 
 ---
 
-## Komme i gang (første gangs oppsett)
+## Versjonshistorikk
 
-### 1. Opprett GitHub-konto
-Gå til github.com og registrer deg gratis.
+| Versjon | Dato | Beskrivelse |
+|---------|------|-------------|
+| v1.0.3 | 2026-03-09 | B2B-stripe slankere, header endret til sticky (ikke fixed) |
+| v1.0.2 | 2026-03-09 | Fiks: alle absolutte paths prefixet med /pamillimetern/ for GitHub Pages |
+| v1.0.1 | 2026-03-09 | Fiks: base href-tag og relative CSS/JS-stier i undermapper |
+| v1.0.0 | 2026-03-09 | Ny B2B-seksjon: /fagfolk/ for entreprenører og arkitekter |
 
-### 2. Opprett et nytt repository
-1. Klikk New (grønn knapp øverst til høyre)
-2. Gi det navn: pamillimetern
-3. Velg Public
-4. Klikk Create repository
-
-### 3. Last opp filene
-1. Pakk ut ZIP-filen du laster ned fra Claude
-2. Gå til ditt nye repository på GitHub
-3. Klikk Add file → Upload files
-4. Dra alle filene og mappene inn i vinduet
-5. Klikk Commit changes
-
-Viktig: Pass på at .nojekyll-filen er med (den er skjult men ligger i ZIP-en).
-
-### 4. Aktiver GitHub Pages
-1. Gå til Settings i repository
-2. Klikk Pages i venstremenyen
-3. Under Source, velg Deploy from a branch
-4. Velg branch: main, mappe: / (root)
-5. Klikk Save
-
-Siden er live på: https://DITTBRUKERNAVN.github.io/pamillimetern
+_(Eldre commits uten versjonsnummer er gjort før versjonering ble innført)_
 
 ---
 
-## Formspree – kontaktskjema
+## Teknisk stack
 
-### Oppsett (én gang)
-1. Gå til formspree.io og registrer deg gratis
-2. Klikk New Form
-3. Kopier Form endpoint: https://formspree.io/f/DITTID
-
-### Legg inn ID i koden
-Finn og erstatt DIN_FORMSPREE_ID i disse fire filene:
-- kontakt.html
-- guide.html
-- en/contact.html
-- en/request.html
-
-### E-postvarsler
-Formspree sender automatisk e-post til registrert adresse.
-Endre under Notifications i Formspree-dashboardet.
-
----
-
-## Koble til eget domene (pamillimetern.no)
-
-### I GitHub
-1. Settings → Pages → Custom domain
-2. Skriv inn pamillimetern.no og klikk Save
-3. GitHub viser hvilke DNS-poster du trenger
-
-### Hos Domeneshop.no
-Logg inn og legg inn DNS-postene GitHub viser deg under DNS for pamillimetern.no.
-
----
-
-## Oppdatere innhold
-
-### Portfolio
-Oppdater Google Sheets-arket. CSV-URL er satt i js/portfolio-page.js.
-
-### Nye bloggartikler
-Lag ny HTML i /blogg/ (NO) og /en/blog/ (EN).
-Oppdater blogg.html og en/guides.html med lenke til ny artikkel.
-
-### Deploye endringer
-Rediger filen direkte på GitHub (blyant-ikon) og klikk Commit changes.
-Siden oppdaterer seg automatisk innen 1-2 minutter.
+| Komponent | Løsning | Kostnad |
+|-----------|---------|---------|
+| Hosting | GitHub Pages | Gratis |
+| Kode | Ren HTML/CSS/JS | – |
+| Kontaktskjema | Formspree (ID: `mzdjddbw`) | Gratis inntil 50/mnd |
+| Portfolio/blogg | Google Sheets → CSV | Gratis |
+| Fonter | Cormorant Garamond + DM Sans (Google Fonts) | Gratis |
 
 ---
 
@@ -92,16 +35,84 @@ Siden oppdaterer seg automatisk innen 1-2 minutter.
 ```
 /
 ├── index.html              Forside (NO)
-├── om-oss.html, kjokken.html, garderobe.html, mobeler.html
-├── kontakt.html, portfolio.html, blogg.html, guide.html
+├── om-oss.html
+├── kjokken.html
+├── garderobe.html
+├── mobeler.html
+├── kontakt.html
+├── portfolio.html
+├── blogg.html
+├── guide.html              Kundeguide / forespørselsskjema
 ├── 404.html
 ├── .nojekyll               Nødvendig for GitHub Pages
 ├── css/
+│   ├── main.css            Globale stiler og variabler
+│   ├── fagfolk.css         B2B-stripe og fagfolk-seksjon
+│   ├── blogg.css
+│   ├── guide.css
+│   ├── kontakt.css
+│   ├── portfolio-page.css
+│   ├── tjeneste.css
+│   └── responsive.css
 ├── js/
+│   ├── main.js
+│   ├── portfolio.js
+│   ├── portfolio-page.js
+│   ├── blogg.js
+│   ├── blogg-en.js
+│   └── guide.js
 ├── blogg/                  Norske bloggartikler
+├── fagfolk/                B2B-seksjon for entreprenører og arkitekter
+│   └── index.html
 └── en/                     Engelsk versjon
     ├── index.html, about.html, kitchen.html, wardrobe.html
     ├── furniture.html, contact.html, portfolio.html
     ├── guides.html, request.html
     └── blog/
 ```
+
+---
+
+## Koble til eget domene (pamillimetern.no)
+
+### Når domenet er klart:
+1. GitHub → Settings → Pages → Custom domain → skriv `pamillimetern.no` → Save
+2. Hos Domeneshop: legg inn DNS-postene GitHub viser
+3. I koden: fjern `<base href="/pamillimetern/">` fra alle HTML-filer og bytt alle `/pamillimetern/`-stier tilbake til `/`
+
+---
+
+## Google Sheets – portfolio
+
+CSV-URL er satt i `js/portfolio-page.js`.
+
+Kolonner i arket:
+`prosjektnr | tittel | kategori | beskrivelse | bilde_url | bilde_url_2 | bilde_url_3 | dato | fremhevet | publiser | mappe_id`
+
+Sett `publiser=JA` for å vise et prosjekt. `fremhevet=JA` vises øverst.
+
+---
+
+## Formspree – kontaktskjema
+
+Form ID: `mzdjddbw`
+Endpoint: `https://formspree.io/f/mzdjddbw`
+
+Brukes i: `kontakt.html`, `guide.html`, `en/contact.html`, `en/request.html`, `fagfolk/index.html`
+
+B2B-forespørsler fra `/fagfolk/` er merket med `kilde: fagfolk` i skjemadata.
+
+---
+
+## Oppdatere innhold
+
+### Portfolio
+Oppdater Google Sheets-arket. Endringer vises umiddelbart på siden.
+
+### Nye bloggartikler
+1. Lag ny `.html` i `/blogg/` (norsk) og `/en/blog/` (engelsk)
+2. Legg til lenke i `blogg.html` og `en/guides.html`
+3. Husk `<base href="/pamillimetern/">` i `<head>`
+
+### Deploy
+Claude committer direkte via git. Siden oppdaterer seg automatisk innen 1–2 minutter etter push.
