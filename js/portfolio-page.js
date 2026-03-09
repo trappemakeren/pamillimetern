@@ -77,7 +77,11 @@ async function hentMappebilder(mappeId) {
     const url = `https://www.googleapis.com/drive/v3/files`
       + `?q=${q}&fields=files(id,name,mimeType)&orderBy=name&pageSize=50`
       + `&key=${DRIVE_API_KEY}`;
-    const res = await fetch(url);
+    // Timeout på 5 sekunder – Drive API skal ikke blokkere hele lastet
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
     if (!res.ok) return [];
     const data = await res.json();
     return (data.files || []).map(f => ({
@@ -120,6 +124,15 @@ async function lastProsjekter() {
       let medier = [];
       if (p.mappe_id && p.mappe_id.trim()) {
         medier = await hentMappebilder(p.mappe_id.trim());
+        // Fallback til bilde_url-kolonner hvis Drive API feiler (f.eks. 403)
+        if (medier.length === 0) {
+          for (const u of [p.bilde_url, p.bilde_url_2, p.bilde_url_3]) {
+            if (!u || !u.trim() || youtubeId(u.trim())) continue;
+            let m = u.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (!m) m = u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (m) medier.push({ type: 'bilde', id: m[1], navn: '' });
+          }
+        }
       } else {
         // Fallback: gamle bilde_url-kolonner
         // Sjekker også om noen av disse er YouTube-URLer (feilplassert)
