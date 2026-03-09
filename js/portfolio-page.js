@@ -1,18 +1,20 @@
 /* =============================================
    På Millimetern – portfolio-page.js
    Filtrering, lightbox med slideshow og Google Sheets-henting
-   Bilder og videoer (mp4) hentes fra Google Drive-mappe via mappe_id-kolonne
-   Videoer spilles automatisk, uten lyd og uten kontroller.
+   
+   Mediehåndtering:
+   - Bilder: Google Drive-mappe via API (mappe_id-kolonne)
+   - Video:  YouTube (youtube_id-kolonne) – autoplay, muted, loop, ingen kontroller
    ============================================= */
 
 const PORTFOLIO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRoVe-zXOkx8Ujj34RY9T6kEdPDS3XIpkQLJMFpInB6FKKSJfIhjqlkvWUavq-lOfhcN9G9ElXVeN9c/pub?gid=904554919&single=true&output=csv';
 const DRIVE_API_KEY     = 'AIzaSyC2h-K_sKpCoKD_cd8L8InA43rsO9Jnn74';
 
 const DEMO_PROSJEKTER = [
-  { tittel: 'Kjøkken, Gjøvik',         kategori: 'Kjøkken',   beskrivelse: 'Et lyst og luftig kjøkken med profilerte fronter i hvit matt lakk.', dato: '2024' },
-  { tittel: 'Walk-in garderobe, Oslo',  kategori: 'Garderobe', beskrivelse: 'Innebygd garderobe fra gulv til tak med skjulte hengsler og glidedører i røkt eik.', dato: '2024' },
-  { tittel: 'Spisebord i eik',          kategori: 'Møbler',    beskrivelse: 'Massivt eikebord med organisk kant og stålunderramme.', dato: '2023' },
-  { tittel: 'Kjøkken, Valdres',         kategori: 'Kjøkken',   beskrivelse: 'Mørkt kjøkken i matt antrasitt med åpne hyller i naturlig eik.', dato: '2023' },
+  { tittel: 'Kjøkken, Gjøvik',        kategori: 'Kjøkken',   beskrivelse: 'Et lyst og luftig kjøkken med profilerte fronter i hvit matt lakk.', dato: '2024' },
+  { tittel: 'Walk-in garderobe, Oslo', kategori: 'Garderobe', beskrivelse: 'Innebygd garderobe fra gulv til tak med skjulte hengsler og glidedører i røkt eik.', dato: '2024' },
+  { tittel: 'Spisebord i eik',         kategori: 'Møbler',    beskrivelse: 'Massivt eikebord med organisk kant og stålunderramme.', dato: '2023' },
+  { tittel: 'Kjøkken, Valdres',        kategori: 'Kjøkken',   beskrivelse: 'Mørkt kjøkken i matt antrasitt med åpne hyller i naturlig eik.', dato: '2023' },
 ];
 
 let alleProsjekter  = [];
@@ -20,11 +22,6 @@ let aktivKategori   = 'Alle';
 let lysbildeIndeks  = 0;
 let slideIndeks     = 0;
 let aktivProsjekter = [];
-
-// ── Er dette en video-fil? ──
-function erVideo(filnavn) {
-  return /\.(mp4|mov|webm|m4v)$/i.test(filnavn || '');
-}
 
 // ── Google Drive bilde-URL ──
 function driveUrl(fileId, bredde = 1200) {
@@ -36,42 +33,57 @@ function driveUrl(fileId, bredde = 1200) {
   return `https://lh3.googleusercontent.com/d/${id}=w${bredde}`;
 }
 
-// ── Google Drive video-URL ──
-// Google Drive tillater ikke <video src="..."> direkte pga. CORS/redirect.
-// Løsning: bruk <iframe src="/preview"> for lightbox og gallerikort.
-function driveVideoIframeSrc(fileId) {
-  if (!fileId) return '';
-  let id = fileId;
-  let m = fileId.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if (!m) m = fileId.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if (m) id = m[1];
-  // autoplay=1&loop=1 støttes av Drive preview-spilleren
-  return `https://drive.google.com/file/d/${id}/preview?autoplay=1&loop=1`;
+// ── YouTube ID-ekstraksjon ──
+// Støtter: youtu.be/ID, youtube.com/watch?v=ID, youtube.com/shorts/ID, eller bare ID
+function youtubeId(verdi) {
+  if (!verdi || !verdi.trim()) return null;
+  const v = verdi.trim();
+  let m;
+  m = v.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);        if (m) return m[1];
+  m = v.match(/[?&]v=([a-zA-Z0-9_-]{11})/);             if (m) return m[1];
+  m = v.match(/\/shorts\/([a-zA-Z0-9_-]{11})/);          if (m) return m[1];
+  m = v.match(/\/embed\/([a-zA-Z0-9_-]{11})/);           if (m) return m[1];
+  if (/^[a-zA-Z0-9_-]{11}$/.test(v)) return v;           // bare ID
+  return null;
 }
 
-// ── Hent alle mediefiler (bilder + mp4) fra en Drive-mappe ──
+// ── YouTube embed-URL for gallerikort (bakgrunnsvideo, muted autoplay loop) ──
+function ytKortUrl(id) {
+  return `https://www.youtube-nocookie.com/embed/${id}`
+    + `?autoplay=1&mute=1&loop=1&playlist=${id}`
+    + `&controls=0&disablekb=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`;
+}
+
+// ── YouTube embed-URL for lightbox (med lyd-kontroll synlig, autoplay) ──
+function ytLightboxUrl(id) {
+  return `https://www.youtube-nocookie.com/embed/${id}`
+    + `?autoplay=1&mute=1&loop=1&playlist=${id}`
+    + `&modestbranding=1&rel=0&iv_load_policy=3`;
+}
+
+// ── YouTube thumbnail som stillbilde ──
+function ytThumbnail(id) {
+  return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+}
+
+// ── Hent alle bilder fra en Drive-mappe via API ──
 async function hentMappebilder(mappeId) {
   if (!mappeId || !mappeId.trim()) return [];
   let id = mappeId.trim();
   const m = id.match(/\/folders\/([a-zA-Z0-9_-]+)/);
   if (m) id = m[1];
   try {
-    // Hent både bilder og mp4-videoer i én forespørsel
-    const q = encodeURIComponent(
-      `'${id}' in parents and (mimeType contains 'image/' or mimeType = 'video/mp4' or mimeType = 'video/quicktime')`
-    );
+    const q = encodeURIComponent(`'${id}' in parents and mimeType contains 'image/'`);
     const url = `https://www.googleapis.com/drive/v3/files`
       + `?q=${q}&fields=files(id,name,mimeType)&orderBy=name&pageSize=50`
       + `&key=${DRIVE_API_KEY}`;
     const res = await fetch(url);
     if (!res.ok) return [];
     const data = await res.json();
-    // Returner objekt med id, navn og type for hvert media
     return (data.files || []).map(f => ({
-      id:       f.id,
-      navn:     f.name,
-      erVideo:  f.mimeType.startsWith('video/'),
-      mimeType: f.mimeType,
+      type:  'bilde',
+      id:    f.id,
+      navn:  f.name,
     }));
   } catch {
     return [];
@@ -99,25 +111,33 @@ async function lastProsjekter() {
     const res = await fetch(PORTFOLIO_CSV_URL);
     if (!res.ok) throw new Error();
     const csv = await res.text();
-
     const rader = parseCSV(csv).filter(p => p.publiser?.toLowerCase() === 'ja');
 
     alleProsjekter = await Promise.all(rader.map(async p => {
       const kategori = normaliserKategori(p.kategori);
 
-      let medier = []; // Array av { id, navn, erVideo }
+      // Bilder fra Drive-mappe
+      let medier = [];
       if (p.mappe_id && p.mappe_id.trim()) {
         medier = await hentMappebilder(p.mappe_id.trim());
       } else {
-        // Fallback: gamle bilde_url-kolonner (antas å være bilder)
         medier = [p.bilde_url, p.bilde_url_2, p.bilde_url_3]
           .filter(u => u && u.trim())
           .map(u => {
             let m = u.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if (!m) m = u.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-            const id = m ? m[1] : u;
-            return { id, navn: '', erVideo: false };
+            return { type: 'bilde', id: m ? m[1] : u, navn: '' };
           });
+      }
+
+      // YouTube-video legges inn som eget medium (plasseres sist i slideshowet)
+      // Støtter kommaseparert liste med flere YouTube-IDer
+      if (p.youtube_id && p.youtube_id.trim()) {
+        const ytIDer = p.youtube_id.split(',').map(s => s.trim()).filter(Boolean);
+        for (const ytRaw of ytIDer) {
+          const ytID = youtubeId(ytRaw);
+          if (ytID) medier.push({ type: 'youtube', id: ytID, navn: 'Video' });
+        }
       }
 
       return { ...p, kategori, _medier: medier };
@@ -149,13 +169,21 @@ function visProsjekter(kategori) {
 
 // ── HTML for ett galleri-kort ──
 function kortHTML(p, i) {
-  const farge   = ['#D4C5B0','#C9B99A','#BFB0A0','#D9CDBF','#CFC0AD','#C4B5A2'][i % 6];
-  const medier  = p._medier || [];
-  const forste  = medier[0];
+  const farge  = ['#D4C5B0','#C9B99A','#BFB0A0','#D9CDBF','#CFC0AD','#C4B5A2'][i % 6];
+  const medier = p._medier || [];
+
+  // Foretrekk første bilde som forsidebilde; fall tilbake på YouTube-thumbnail
+  const bildeMedium = medier.find(m => m.type === 'bilde');
+  const ytMedium    = medier.find(m => m.type === 'youtube');
+  const harVideo    = !!ytMedium;
 
   let mediEl;
-  if (!forste) {
-    // Ingen media – vis placeholder
+  if (bildeMedium) {
+    mediEl = `<img src="${driveUrl(bildeMedium.id)}" alt="${p.tittel}" loading="lazy" />`;
+  } else if (ytMedium) {
+    // Ingen bilde – vis YouTube-thumbnail som forsidebilde
+    mediEl = `<img src="${ytThumbnail(ytMedium.id)}" alt="${p.tittel}" loading="lazy" />`;
+  } else {
     mediEl = `<div class="pgalleri-placeholder" style="background:${farge}">
       <svg width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
         <rect x="8" y="8" width="32" height="32" rx="2"/>
@@ -164,30 +192,17 @@ function kortHTML(p, i) {
       </svg>
       <span>${p.tittel}</span>
     </div>`;
-  } else if (forste.erVideo) {
-    // Video i gallerikort via iframe (Google Drive blokkerer <video> direkte)
-    // pointer-events:none hindrer klikk på iframe – kortet håndterer klikket
-    mediEl = `<div class="pgalleri-video-wrapper">
-                <iframe src="${driveVideoIframeSrc(forste.id)}"
-                  class="pgalleri-video-iframe"
-                  allow="autoplay"
-                  allowfullscreen="false"
-                  frameborder="0"
-                  aria-hidden="true"></iframe>
-              </div>
-              <div class="pgalleri-video-ikon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
-                  <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.35)"/>
-                  <polygon points="10,8 17,12 10,16" fill="white"/>
-                </svg>
-              </div>`;
-  } else {
-    mediEl = `<img src="${driveUrl(forste.id)}" alt="${p.tittel}" loading="lazy" />`;
   }
 
   return `
-    <article class="pgalleri-kort" role="button" tabindex="0" aria-label="${p.tittel}">
+    <article class="pgalleri-kort${harVideo ? ' har-video' : ''}" role="button" tabindex="0" aria-label="${p.tittel}">
       ${mediEl}
+      ${harVideo ? `<div class="pgalleri-video-ikon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="28" height="28">
+          <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.45)"/>
+          <polygon points="10,8 17,12 10,16" fill="white"/>
+        </svg>
+      </div>` : ''}
       <div class="pgalleri-overlay">
         <div class="pgalleri-kat">${p.kategori}</div>
         <div class="pgalleri-tittel">${p.tittel}</div>
@@ -206,13 +221,10 @@ function apneLysbilde(indeks) {
   document.body.style.overflow = 'hidden';
 }
 
-// ── Stopp aktiv video i lightbox (ved bytte/lukking) ──
-function stoppLightboxVideo() {
-  const iframe = document.getElementById('lightbox-video-iframe');
-  if (iframe) {
-    iframe.src = ''; // stopper avspilling
-    iframe.remove();
-  }
+// ── Fjern YouTube-iframe fra lightbox ──
+function fjernYtIframe() {
+  const el = document.getElementById('lightbox-yt-iframe');
+  if (el) el.remove();
 }
 
 // ── Oppdater lightbox-innhold ──
@@ -229,15 +241,16 @@ function oppdaterLysbilde() {
 
   byttSlide(0, medier);
 
-  // Bygg thumbnails
+  // Thumbnails
   const thumbContainer = document.getElementById('slideshow-thumbnails');
   if (medier.length > 1) {
     thumbContainer.innerHTML = medier.map((m, i) => {
-      if (m.erVideo) {
-        return `<button class="slideshow-thumb ${i === 0 ? 'aktiv' : ''}" data-slide="${i}" aria-label="Video ${i + 1}">
-          <div class="thumb-video-ikon">
-            <svg viewBox="0 0 24 24" width="18" height="18">
-              <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)"/>
+      if (m.type === 'youtube') {
+        return `<button class="slideshow-thumb yt-thumb ${i === 0 ? 'aktiv' : ''}" data-slide="${i}" aria-label="Video ${i + 1}">
+          <img src="${ytThumbnail(m.id)}" alt="Video ${i + 1}" loading="lazy" />
+          <div class="thumb-play-ikon">
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.55)"/>
               <polygon points="10,8 17,12 10,16" fill="white"/>
             </svg>
           </div>
@@ -257,7 +270,7 @@ function oppdaterLysbilde() {
   }
 }
 
-// ── Bytt media i slideshow ──
+// ── Bytt medium i slideshow ──
 function byttSlide(nyIndeks, medier) {
   medier = medier || (aktivProsjekter[lysbildeIndeks]._medier || []);
   if (nyIndeks < 0) nyIndeks = medier.length - 1;
@@ -267,29 +280,25 @@ function byttSlide(nyIndeks, medier) {
   const medium = medier[slideIndeks];
   const img    = document.getElementById('lightbox-bilde');
 
-  if (medium && medium.erVideo) {
-    // Vis video via iframe, skjul bilde
+  // Rydd alltid opp YouTube-iframe fra forrige slide
+  fjernYtIframe();
+
+  if (medium && medium.type === 'youtube') {
+    // YouTube: lag iframe
     img.style.display = 'none';
     img.src = '';
-    // Fjern gammel iframe om den finnes
-    const gammelIframe = document.getElementById('lightbox-video-iframe');
-    if (gammelIframe) gammelIframe.remove();
-    // Fjern gammelt video-element om det finnes fra tidligere versjon
-    const gammelVid = document.getElementById('lightbox-video');
-    if (gammelVid) gammelVid.remove();
 
     const iframe = document.createElement('iframe');
-    iframe.id          = 'lightbox-video-iframe';
-    iframe.src         = driveVideoIframeSrc(medium.id);
-    iframe.allow       = 'autoplay';
-    iframe.frameBorder = '0';
-    // Portrett-videoer får egen klasse for riktig størrelse
-    iframe.className   = medium.portrett ? 'lightbox-video-iframe portrett' : 'lightbox-video-iframe';
+    iframe.id            = 'lightbox-yt-iframe';
+    iframe.src           = ytLightboxUrl(medium.id);
+    iframe.allow         = 'autoplay; fullscreen';
+    iframe.allowFullscreen = true;
+    iframe.frameBorder   = '0';
+    iframe.className     = 'lightbox-yt-iframe';
     img.parentNode.insertBefore(iframe, img);
+
   } else {
-    // Vis bilde, fjern evt. video-iframe
-    const gammelIframe = document.getElementById('lightbox-video-iframe');
-    if (gammelIframe) gammelIframe.remove();
+    // Bilde
     img.src           = medium ? driveUrl(medium.id) : '';
     img.style.display = medium ? 'block' : 'none';
   }
@@ -303,7 +312,7 @@ function byttSlide(nyIndeks, medier) {
 }
 
 function lukkLysbilde() {
-  stoppLightboxVideo();
+  fjernYtIframe();
   document.getElementById('lightbox').style.display = 'none';
   document.getElementById('lightbox-bakgrunn').style.display = 'none';
   document.body.style.overflow = '';
@@ -333,13 +342,13 @@ document.getElementById('lightbox-lukk')?.addEventListener('click', lukkLysbilde
 document.getElementById('lightbox-bakgrunn')?.addEventListener('click', lukkLysbilde);
 
 document.getElementById('lightbox-neste')?.addEventListener('click', () => {
-  stoppLightboxVideo();
+  fjernYtIframe();
   lysbildeIndeks = (lysbildeIndeks + 1) % aktivProsjekter.length;
   slideIndeks = 0;
   oppdaterLysbilde();
 });
 document.getElementById('lightbox-forrige')?.addEventListener('click', () => {
-  stoppLightboxVideo();
+  fjernYtIframe();
   lysbildeIndeks = (lysbildeIndeks - 1 + aktivProsjekter.length) % aktivProsjekter.length;
   slideIndeks = 0;
   oppdaterLysbilde();
@@ -359,7 +368,7 @@ document.getElementById('lightbox')?.addEventListener('touchend', (e) => {
     if (medier.length > 1) {
       byttSlide(dx < 0 ? slideIndeks + 1 : slideIndeks - 1);
     } else {
-      stoppLightboxVideo();
+      fjernYtIframe();
       lysbildeIndeks = dx < 0
         ? (lysbildeIndeks + 1) % aktivProsjekter.length
         : (lysbildeIndeks - 1 + aktivProsjekter.length) % aktivProsjekter.length;
@@ -377,10 +386,10 @@ document.addEventListener('keydown', (e) => {
     lukkLysbilde();
   } else if (e.key === 'ArrowRight') {
     if (medier.length > 1 && slideIndeks < medier.length - 1) byttSlide(slideIndeks + 1);
-    else { stoppLightboxVideo(); lysbildeIndeks = (lysbildeIndeks + 1) % aktivProsjekter.length; slideIndeks = 0; oppdaterLysbilde(); }
+    else { fjernYtIframe(); lysbildeIndeks = (lysbildeIndeks + 1) % aktivProsjekter.length; slideIndeks = 0; oppdaterLysbilde(); }
   } else if (e.key === 'ArrowLeft') {
     if (medier.length > 1 && slideIndeks > 0) byttSlide(slideIndeks - 1);
-    else { stoppLightboxVideo(); lysbildeIndeks = (lysbildeIndeks - 1 + aktivProsjekter.length) % aktivProsjekter.length; slideIndeks = 0; oppdaterLysbilde(); }
+    else { fjernYtIframe(); lysbildeIndeks = (lysbildeIndeks - 1 + aktivProsjekter.length) % aktivProsjekter.length; slideIndeks = 0; oppdaterLysbilde(); }
   }
 });
 

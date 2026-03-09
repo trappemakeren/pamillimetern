@@ -114,56 +114,38 @@
 }
 .pgalleri-kort:hover img { transform: scale(1.05); }
 
-/* Video i galleri-kort via iframe */
-.pgalleri-video-wrapper {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.pgalleri-video-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  pointer-events: none; /* kortet håndterer klikk, ikke iframe */
-  display: block;
-}
-
-/* Play-ikon på video-kort */
+/* Play-ikon på kort med video */
 .pgalleri-video-ikon {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
-/* Video i lightbox via iframe */
-.lightbox-video-iframe {
+/* YouTube iframe i lightbox */
+.lightbox-yt-iframe {
   width: 100%;
-  max-height: 70vh;
   aspect-ratio: 16 / 9;
+  max-height: 68vh;
   border: none;
   display: block;
   border-radius: 4px;
   background: #000;
 }
-/* Portrett-video (9:16) – smalere, høyere */
-.lightbox-video-iframe.portrett {
-  max-width: 40vh;
-  aspect-ratio: 9 / 16;
-  margin: 0 auto;
-}
 
-/* Video-thumbnail i slideshow */
-.slideshow-thumb .thumb-video-ikon {
-  width: 100%;
-  height: 100%;
+/* YouTube-thumbnail i slideshow-thumbs */
+.slideshow-thumb.yt-thumb {
+  position: relative;
+}
+.slideshow-thumb .thumb-play-ikon {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--clr-dark);
-  border-radius: 3px;
+  pointer-events: none;
 }
 
 .pgalleri-overlay {
