@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/pamillimetern/css/main.css" />
   <link rel="stylesheet" href="/pamillimetern/css/fagfolk.css" />
   <link rel="stylesheet" href="/pamillimetern/css/responsive.css" />
+  <link rel="icon" type="image/svg+xml" href="/pamillimetern/favicon.svg" />
+  <link rel="apple-touch-icon" href="/pamillimetern/apple-touch-icon.svg" />
 </head>
 <body>
 
@@ -352,8 +354,34 @@
     </div>
   </footer>
 
-  <script src="/pamillimetern/js/main.js"></script>
-  <script src="../js/analytics.js"></script>
-  <script src="../js/personvern-banner.js"></script>
+  <script src="/pamillimetern/js/main.js" defer></script>
+  <script src="../js/analytics.js" defer></script>
+  <script src="../js/personvern-banner.js" defer></script>
+
+  <!-- Klikksporing: telefon og e-post -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
+      el.addEventListener('click', function() {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'click_phone', {
+            'event_category': 'kontakt',
+            'event_label': el.href
+          });
+        }
+      });
+    });
+    document.querySelectorAll('a[href^="mailto:"]').forEach(function(el) {
+      el.addEventListener('click', function() {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'click_email', {
+            'event_category': 'kontakt',
+            'event_label': el.href
+          });
+        }
+      });
+    });
+  });
+  </script>
 </body>
 </html>
