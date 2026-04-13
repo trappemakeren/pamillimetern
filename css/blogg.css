@@ -185,7 +185,7 @@
   font-size: 0.9rem;
 }
 .sammenligning-tabell th {
-  background: var(--clr-ink);
+  background: var(--clr-dark-btn);
   color: var(--clr-white);
   padding: 0.85rem 1rem;
   text-align: left;

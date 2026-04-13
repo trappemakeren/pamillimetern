@@ -10,7 +10,8 @@
 /* ── CSS-variabler ── */
 :root {
   --clr-bg:        #F5F0E8;   /* varm pergament */
-  --clr-bg-dark:   #1C1915;   /* mørk eik */
+  --clr-bg-dark:   #3A6E9E;   /* stålblå – mørke seksjoner */
+  --clr-dark-btn:  #3A6E9E;   /* knapper og mørke UI-elementer */
   --clr-ink:       #1C1915;   /* primær tekst */
   --clr-ink-mid:   #5C5449;   /* sekundær tekst */
   --clr-ink-light: #9C9288;   /* svak tekst */
@@ -92,7 +93,7 @@ p { max-width: 65ch; }
 }
 
 .btn-primary {
-  background: var(--clr-ink);
+  background: var(--clr-dark-btn);
   color: var(--clr-white);
 }
 .btn-primary:hover {
@@ -106,7 +107,7 @@ p { max-width: 65ch; }
   border: 1px solid var(--clr-ink);
 }
 .btn-ghost:hover {
-  background: var(--clr-ink);
+  background: var(--clr-dark-btn);
   color: var(--clr-white);
   transform: translateY(-2px);
 }
@@ -197,7 +198,7 @@ p { max-width: 65ch; }
 .nav-links a:hover { color: var(--clr-ink); }
 
 .nav-cta {
-  background: var(--clr-ink);
+  background: var(--clr-dark-btn);
   color: var(--clr-white) !important;
   padding: 0.55rem 1.3rem;
   border-radius: var(--radius-sm);
@@ -856,7 +857,7 @@ p { max-width: 65ch; }
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--farge-mork, #1C1915);
+  background: var(--farge-mork, #3A6E9E);
   color: #e8e0d4;
   z-index: 9999;
   transform: translateY(100%);
