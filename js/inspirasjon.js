@@ -61,11 +61,44 @@ async function hentProsjekter() {
   }
 }
 
+function kortHTML(p, index) {
+  const slug = slugify(p.kategori);
+  const bildeKilde = p.bilde_url ? driveUrl(p.bilde_url) : '';
+  return `
+    <article class="insp-card" data-kategori="${slug}" data-index="${index}">
+      ${bildeKilde
+        ? `<img src="${bildeKilde}" alt="${escapeHtml(p.tittel || '')}" loading="lazy" />`
+        : `<div style="width:100%;height:100%;background:var(--clr-line);"></div>`}
+      <span class="insp-badge insp-badge--${slug}">${escapeHtml(p.kategori || 'Annet')}</span>
+      <div class="insp-card-overlay">
+        <h4>${escapeHtml(p.tittel || '')}</h4>
+        <p>${escapeHtml(p.kategori || '')}${p.dato ? ' · ' + escapeHtml(p.dato) : ''}</p>
+      </div>
+    </article>
+  `;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function renderGalleri(prosjekter) {
+  const container = document.getElementById('inspirasjon-grid');
+  if (!container) return;
+  synligeProsjekter = prosjekter.slice(0, 6);
+  if (synligeProsjekter.length === 0) {
+    container.innerHTML = '<div class="inspirasjon-loading">Ingen prosjekter å vise.</div>';
+    return;
+  }
+  container.innerHTML = synligeProsjekter.map((p, i) => kortHTML(p, i)).join('');
+}
+
 // Initialiserer ved DOMContentLoaded
 async function init() {
-  const data = await hentProsjekter();
-  console.log('Hentet', data.length, 'publiserte prosjekter');
-  // Render kommer i neste task
+  await hentProsjekter();
+  renderGalleri(alleProsjekter);
 }
 
 if (document.readyState === 'loading') {
