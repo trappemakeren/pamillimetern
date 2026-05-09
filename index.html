@@ -166,6 +166,44 @@
     </div>
   </section>
 
+  <!-- ===================== INSPIRASJON ===================== -->
+  <section class="inspirasjon" id="inspirasjon">
+    <div class="section-header">
+      <span class="section-label">UTVALGTE ARBEIDER</span>
+      <h2>Inspirasjon</h2>
+    </div>
+
+    <div class="inspirasjon-filter" role="group" aria-label="Filtrer etter kategori">
+      <button class="insp-filter-btn active" data-filter="alle" aria-pressed="true">Alle</button>
+      <button class="insp-filter-btn" data-filter="kjokken" aria-pressed="false">Kjøkken</button>
+      <button class="insp-filter-btn" data-filter="garderobe" aria-pressed="false">Garderobe</button>
+      <button class="insp-filter-btn" data-filter="mobler" aria-pressed="false">Møbler</button>
+    </div>
+
+    <div class="inspirasjon-grid" id="inspirasjon-grid">
+      <div class="inspirasjon-loading">Laster prosjekter…</div>
+    </div>
+
+    <div class="inspirasjon-cta">
+      <a href="/pamillimetern/portfolio.html" class="btn btn-ghost">Se hele portfolioen →</a>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="insp-lightbox" id="insp-lightbox" hidden>
+      <div class="insp-lightbox-backdrop"></div>
+      <div class="insp-lightbox-content">
+        <button class="insp-lightbox-close" aria-label="Lukk">×</button>
+        <button class="insp-lightbox-prev" aria-label="Forrige">‹</button>
+        <button class="insp-lightbox-next" aria-label="Neste">›</button>
+        <img class="insp-lightbox-img" src="" alt="" />
+        <div class="insp-lightbox-info">
+          <h4 class="insp-lightbox-title"></h4>
+          <p class="insp-lightbox-kategori"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== TJENESTER ===================== -->
   <section class="tjenester" id="tjenester">
     <div class="section-header">
@@ -286,21 +324,6 @@
           <div class="detail-line"></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ===================== PORTFOLIO PREVIEW ===================== -->
-  <section class="portfolio-preview">
-    <div class="section-header">
-      <span class="section-label">Utvalgte arbeider</span>
-      <h2>Portfolio</h2>
-    </div>
-    <!-- Portfolio-kort lastes dynamisk fra Google Sheets via js/portfolio.js -->
-    <div class="portfolio-grid" id="portfolio-grid">
-      <div class="portfolio-loading">Laster prosjekter…</div>
-    </div>
-    <div class="portfolio-cta">
-      <a href="portfolio.html" class="btn btn-ghost">Se alle prosjekter</a>
     </div>
   </section>
 
