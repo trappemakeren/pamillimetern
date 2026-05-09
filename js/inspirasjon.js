@@ -67,7 +67,7 @@ function kortHTML(p, index) {
   return `
     <article class="insp-card" data-kategori="${slug}" data-index="${index}">
       ${bildeKilde
-        ? `<img src="${bildeKilde}" alt="${escapeHtml(p.tittel || '')}" loading="lazy" />`
+        ? `<img src="${escapeHtml(bildeKilde)}" alt="${escapeHtml(p.tittel || '')}" loading="lazy" />`
         : `<div style="width:100%;height:100%;background:var(--clr-line);"></div>`}
       <span class="insp-badge insp-badge--${slug}">${escapeHtml(p.kategori || 'Annet')}</span>
       <div class="insp-card-overlay">
