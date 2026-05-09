@@ -84,12 +84,27 @@ function escapeHtml(s) {
   }[c]));
 }
 
+function lagPlaceholderKort() {
+  const farger = ['#D4C5B0', '#C9B99A', '#BFB0A0', '#D9CDBF', '#CFC0AD', '#C4B5A2'];
+  return farger.map((f, i) => `
+    <article class="insp-card" style="background:${f};" data-index="${i}">
+      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0.4">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#5C5449" stroke-width="1.2">
+          <rect x="8" y="8" width="32" height="32" rx="2"/>
+          <circle cx="18" cy="18" r="4"/>
+          <path d="M8 32 l10-10 8 8 6-6 8 8"/>
+        </svg>
+      </div>
+    </article>
+  `).join('');
+}
+
 function renderGalleri(prosjekter) {
   const container = document.getElementById('inspirasjon-grid');
   if (!container) return;
   synligeProsjekter = prosjekter.slice(0, 6);
   if (synligeProsjekter.length === 0) {
-    container.innerHTML = '<div class="inspirasjon-loading">Ingen prosjekter å vise.</div>';
+    container.innerHTML = lagPlaceholderKort();
     return;
   }
   container.innerHTML = synligeProsjekter.map((p, i) => kortHTML(p, i)).join('');
