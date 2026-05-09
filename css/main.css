@@ -702,6 +702,27 @@ p { max-width: 65ch; }
   margin-top: 0.3rem;
 }
 
+/* Kategori-badges */
+.insp-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 0.7rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  z-index: 2;
+}
+
+.insp-badge--kjokken   { background: #8B5E3C; }
+.insp-badge--garderobe { background: #3A6E9E; }
+.insp-badge--mobler    { background: #5C5449; }
+.insp-badge--annet     { background: #9C9288; }
+
 /* ══════════════════════════════════
    BLOGG PREVIEW
 ══════════════════════════════════ */
