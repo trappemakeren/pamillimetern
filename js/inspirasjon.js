@@ -95,10 +95,42 @@ function renderGalleri(prosjekter) {
   container.innerHTML = synligeProsjekter.map((p, i) => kortHTML(p, i)).join('');
 }
 
+function filtrerKategori(slug) {
+  const filtrert = slug === 'alle'
+    ? alleProsjekter
+    : alleProsjekter.filter(p => slugify(p.kategori) === slug);
+
+  const container = document.getElementById('inspirasjon-grid');
+  if (container) {
+    container.style.opacity = '0';
+    container.style.transition = 'opacity 0.2s ease';
+    setTimeout(() => {
+      renderGalleri(filtrert);
+      container.style.opacity = '1';
+    }, 200);
+  }
+}
+
+function settOppFilter() {
+  const knapper = document.querySelectorAll('.insp-filter-btn');
+  knapper.forEach(btn => {
+    btn.addEventListener('click', () => {
+      knapper.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      filtrerKategori(btn.dataset.filter);
+    });
+  });
+}
+
 // Initialiserer ved DOMContentLoaded
 async function init() {
   await hentProsjekter();
   renderGalleri(alleProsjekter);
+  settOppFilter();
 }
 
 if (document.readyState === 'loading') {
