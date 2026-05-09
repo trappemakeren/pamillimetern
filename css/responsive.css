@@ -54,6 +54,17 @@ html, body {
   .cta-band-inner {
     padding: 0 var(--space-md);
   }
+
+  /* Inspirasjon: 2 kolonner jevnt */
+  .inspirasjon-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .inspirasjon-grid .insp-card {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    aspect-ratio: 4/3;
+  }
 }
 
 /* ══════════════════════════════════
@@ -229,6 +240,16 @@ html, body {
   .lightbox-info { padding: var(--space-sm); }
   .lightbox-forrige { left: 0.5rem; }
   .lightbox-neste   { right: 0.5rem; }
+
+  /* Inspirasjon: 1 kolonne */
+  .inspirasjon-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Lightbox-knapper inn i synlig område på mobil */
+  .insp-lightbox-close { top: 1rem; right: 1rem; }
+  .insp-lightbox-prev  { left: 0.5rem; }
+  .insp-lightbox-next  { right: 0.5rem; }
 }
 
 /* ══════════════════════════════════
@@ -333,7 +354,8 @@ html, body {
 
   /* Portfolio-overlay alltid synlig på touch */
   .portfolio-card-overlay,
-  .pgalleri-overlay {
+  .pgalleri-overlay,
+  .insp-card-overlay {
     transform: translateY(0) !important;
     opacity: 1 !important;
   }
