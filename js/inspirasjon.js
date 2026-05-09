@@ -126,11 +126,68 @@ function settOppFilter() {
   });
 }
 
+function aapneLightbox(index) {
+  if (index < 0 || index >= synligeProsjekter.length) return;
+  aktivLightboxIndex = index;
+  const p = synligeProsjekter[index];
+  const lightbox = document.getElementById('insp-lightbox');
+  const img = lightbox.querySelector('.insp-lightbox-img');
+  const tittel = lightbox.querySelector('.insp-lightbox-title');
+  const kategori = lightbox.querySelector('.insp-lightbox-kategori');
+
+  img.src = p.bilde_url ? driveUrl(p.bilde_url, 1600) : '';
+  img.alt = p.tittel || '';
+  tittel.textContent = p.tittel || '';
+  kategori.textContent = p.kategori || '';
+
+  lightbox.removeAttribute('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function lukkLightbox() {
+  const lightbox = document.getElementById('insp-lightbox');
+  lightbox.setAttribute('hidden', '');
+  document.body.style.overflow = '';
+}
+
+function navigerLightbox(retning) {
+  const ny = (aktivLightboxIndex + retning + synligeProsjekter.length) % synligeProsjekter.length;
+  aapneLightbox(ny);
+}
+
+function settOppLightbox() {
+  const lightbox = document.getElementById('insp-lightbox');
+  if (!lightbox) return;
+
+  // Klikk på kort
+  document.getElementById('inspirasjon-grid').addEventListener('click', e => {
+    const kort = e.target.closest('.insp-card');
+    if (kort) aapneLightbox(parseInt(kort.dataset.index, 10));
+  });
+
+  // Lukk-knapp og backdrop
+  lightbox.querySelector('.insp-lightbox-close').addEventListener('click', lukkLightbox);
+  lightbox.querySelector('.insp-lightbox-backdrop').addEventListener('click', lukkLightbox);
+
+  // Pil-knapper
+  lightbox.querySelector('.insp-lightbox-prev').addEventListener('click', () => navigerLightbox(-1));
+  lightbox.querySelector('.insp-lightbox-next').addEventListener('click', () => navigerLightbox(1));
+
+  // Tastatur
+  document.addEventListener('keydown', e => {
+    if (lightbox.hasAttribute('hidden')) return;
+    if (e.key === 'Escape') lukkLightbox();
+    if (e.key === 'ArrowLeft') navigerLightbox(-1);
+    if (e.key === 'ArrowRight') navigerLightbox(1);
+  });
+}
+
 // Initialiserer ved DOMContentLoaded
 async function init() {
   await hentProsjekter();
   renderGalleri(alleProsjekter);
   settOppFilter();
+  settOppLightbox();
 }
 
 if (document.readyState === 'loading') {
