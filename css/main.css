@@ -589,6 +589,60 @@ p { max-width: 65ch; }
 }
 
 /* ══════════════════════════════════
+   INSPIRASJON GALLERI
+══════════════════════════════════ */
+.inspirasjon {
+  padding: var(--space-xl) var(--space-md);
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+.inspirasjon-loading {
+  color: var(--clr-ink-light);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  padding: var(--space-md) 0;
+  text-align: center;
+}
+
+/* Filterknapper */
+.inspirasjon-filter {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-md);
+}
+
+.insp-filter-btn {
+  background: transparent;
+  border: 1px solid var(--clr-line);
+  color: var(--clr-ink-mid);
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.insp-filter-btn:hover {
+  border-color: var(--clr-ink-mid);
+  color: var(--clr-ink);
+}
+
+.insp-filter-btn.active {
+  border-color: var(--clr-accent);
+  color: var(--clr-accent);
+}
+
+.inspirasjon-cta {
+  text-align: center;
+  margin-top: var(--space-md);
+}
+
+/* ══════════════════════════════════
    BLOGG PREVIEW
 ══════════════════════════════════ */
 .blogg-preview {
