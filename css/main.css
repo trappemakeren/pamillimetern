@@ -723,6 +723,100 @@ p { max-width: 65ch; }
 .insp-badge--mobler    { background: #5C5449; }
 .insp-badge--annet     { background: #9C9288; }
 
+/* Lightbox */
+.insp-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: insp-fade-in 0.25s ease-out;
+}
+
+.insp-lightbox[hidden] {
+  display: none;
+}
+
+.insp-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 25, 21, 0.92);
+  backdrop-filter: blur(4px);
+}
+
+.insp-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: insp-scale-in 0.3s ease-out;
+}
+
+.insp-lightbox-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+}
+
+.insp-lightbox-info {
+  text-align: center;
+  color: var(--clr-white);
+}
+
+.insp-lightbox-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+}
+
+.insp-lightbox-kategori {
+  font-size: 0.85rem;
+  color: rgba(253,250,245,0.7);
+  margin-top: 0.25rem;
+}
+
+.insp-lightbox-close,
+.insp-lightbox-prev,
+.insp-lightbox-next {
+  position: absolute;
+  background: rgba(253,250,245,0.1);
+  border: 1px solid rgba(253,250,245,0.2);
+  color: var(--clr-white);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.insp-lightbox-close:hover,
+.insp-lightbox-prev:hover,
+.insp-lightbox-next:hover {
+  background: rgba(253,250,245,0.2);
+}
+
+.insp-lightbox-close { top: -3rem; right: 0; }
+.insp-lightbox-prev  { left: -4rem; top: 50%; transform: translateY(-50%); }
+.insp-lightbox-next  { right: -4rem; top: 50%; transform: translateY(-50%); }
+
+@keyframes insp-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes insp-scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
 /* ══════════════════════════════════
    BLOGG PREVIEW
 ══════════════════════════════════ */
