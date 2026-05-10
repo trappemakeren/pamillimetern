@@ -305,13 +305,8 @@
       try {
         const res = await fetch('https://formspree.io/f/mzdjddbw', { method: 'POST', body: new FormData(this) });
         if (res.ok) {
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', 'generate_lead', {
-              'event_category': 'lead',
-              'event_label': 'kontaktskjema',
-              'value': 1000,
-              'currency': 'NOK'
-            });
+          if (typeof analytics !== 'undefined') {
+            analytics.track('generate_lead', { kilde: 'kontaktskjema' });
           }
           document.getElementById('kontakt-form-wrapper').style.display = 'none';
           document.getElementById('kontakt-takk').style.display = 'flex';
@@ -329,21 +324,15 @@
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
       el.addEventListener('click', function() {
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'click_phone', {
-            'event_category': 'kontakt',
-            'event_label': el.href
-          });
+        if (typeof analytics !== 'undefined') {
+          analytics.track('click_phone', { mål: el.href });
         }
       });
     });
     document.querySelectorAll('a[href^="mailto:"]').forEach(function(el) {
       el.addEventListener('click', function() {
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'click_email', {
-            'event_category': 'kontakt',
-            'event_label': el.href
-          });
+        if (typeof analytics !== 'undefined') {
+          analytics.track('click_email', { mål: el.href });
         }
       });
     });

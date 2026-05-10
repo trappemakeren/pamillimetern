@@ -162,14 +162,9 @@ if (form) {
       });
 
       if (res.ok) {
-        // ── Konverteringssporing ──
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'generate_lead', {
-            'event_category': 'lead',
-            'event_label': 'guide-forespørsel',
-            'value': 1000,
-            'currency': 'NOK'
-          });
+        // ── Konverteringssporing (Plausible) ──
+        if (typeof analytics !== 'undefined') {
+          analytics.track('generate_lead', { kilde: 'guide-forespørsel' });
         }
         form.style.display = 'none';
         document.getElementById('guide-takk').style.display = 'flex';

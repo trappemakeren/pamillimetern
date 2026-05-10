@@ -1,65 +1,30 @@
 /* ─────────────────────────────────────────────────────────
    analytics.js
-   Laster Google Analytics kun etter eksplisitt samtykke.
-   Samtykke lagres i localStorage: pam_ga_samtykke = 'ja' | 'nei'
+   Tynt skall som rutere events til Plausible Analytics.
+   Plausible-scriptet lastes via <head> i hver HTML-fil.
 
    Bruk:
-     analytics.samtykke()   → har brukeren samtykket?
-     analytics.aksepter()   → bruker godtar – last GA
-     analytics.avslaa()     → bruker avslår – ikke last GA
-     analytics.tilbakestill() → slett samtykke (for testing)
+     analytics.track('event_navn', { prop1: 'verdi' })
+
+   Eksempler:
+     analytics.track('generate_lead', { type: 'guide' })
+     analytics.track('click_phone')
+     analytics.track('click_email')
+
+   Hvis Plausible-scriptet ikke er lastet (f.eks. ved
+   nettverksfeil eller ad-blocker) feiler kallene stille.
    ───────────────────────────────────────────────────────── */
 
 const analytics = (function () {
-  const NØKKEL   = 'pam_ga_samtykke';
-  const GA_ID    = 'G-XXXXXXXXXX'; // ← BYTT UT MED DITT MÅLINGS-ID FRA GOOGLE ANALYTICS
-
-  function samtykke() {
-    return localStorage.getItem(NØKKEL);
+  function track(event, props) {
+    if (typeof window.plausible === 'function') {
+      if (props && Object.keys(props).length > 0) {
+        window.plausible(event, { props: props });
+      } else {
+        window.plausible(event);
+      }
+    }
   }
 
-  function lastGA() {
-    if (window._gaLastet) return;
-    window._gaLastet = true;
-
-    // Legg til GA-script
-    const script = document.createElement('script');
-    script.async = true;
-    script.src   = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { window.dataLayer.push(arguments); }
-    window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', GA_ID, {
-      anonymize_ip: true,         // IP-anonymisering
-      allow_google_signals: false, // Ingen remarketing
-      allow_ad_personalization_signals: false
-    });
-  }
-
-  function aksepter() {
-    localStorage.setItem(NØKKEL, 'ja');
-    lastGA();
-  }
-
-  function avslaa() {
-    localStorage.setItem(NØKKEL, 'nei');
-    // Sørg for at GA ikke lastes
-    window['ga-disable-' + GA_ID] = true;
-  }
-
-  function tilbakestill() {
-    localStorage.removeItem(NØKKEL);
-    localStorage.removeItem('pam_personvern_sett');
-    location.reload();
-  }
-
-  // Last GA automatisk hvis bruker allerede har samtykket
-  if (samtykke() === 'ja') {
-    lastGA();
-  }
-
-  return { samtykke, aksepter, avslaa, tilbakestill };
+  return { track };
 })();
